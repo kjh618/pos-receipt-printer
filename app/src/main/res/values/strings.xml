@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">POS Receipt Printer</string>
+    <string name="app_name">POS 영수증 프린터</string>
+    <string name="button_print">프린트</string>
 </resources>
