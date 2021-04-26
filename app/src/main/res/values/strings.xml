@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">POS 영수증 프린터</string>
     <string name="button_print">프린트</string>
+    <string name="text_view_info_title">USB 정보</string>
+    <string name="text_view_print_content_title">프린트 내용</string>
+    <string name="text_view_input_title">입력</string>
+    <string name="button_input">↵</string>
+    <string name="button_delete">←</string>
 </resources>
