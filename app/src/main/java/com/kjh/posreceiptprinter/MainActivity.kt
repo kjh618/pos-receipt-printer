@@ -14,8 +14,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var usbEndpoint: UsbEndpoint
     private lateinit var usbConnection: UsbDeviceConnection
 
-    private var printContent: MutableList<Byte> = mutableListOf()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,33 +33,20 @@ class MainActivity : AppCompatActivity() {
         usbConnection = manager.openDevice(device)
     }
 
-    private fun updateTextViewPrintContent() {
-        val textViewPrintContent = findViewById<TextView>(R.id.textViewPrintContent)
-        textViewPrintContent.text = printContent.toString()
-    }
+    private fun parse(stringWithHex: String): ByteArray {
+        val hexEscape = Regex("""\\x[0-9a-fA-F]{2}""")
 
-    fun inputNumber(view: View) {
-        val editTextNumberInput = findViewById<EditText>(R.id.editTextNumberInput)
-        val byte = editTextNumberInput.text.toString().toByte()
-        editTextNumberInput.setText("")
-        printContent.add(byte)
-        updateTextViewPrintContent()
-    }
-
-    fun delete(view: View) {
-        printContent.removeLastOrNull()
-        updateTextViewPrintContent()
-    }
-
-    fun inputString(view: View) {
-        val editTextStringInput = findViewById<EditText>(R.id.editTextStringInput)
-        val bytes = editTextStringInput.text.toString().toByteArray(Charset.forName("EUC-KR"))
-        bytes.toCollection(printContent)
-        updateTextViewPrintContent()
+        val newString = hexEscape.replace(stringWithHex) { match ->
+            match.value.substring(2).toInt(16).toChar().toString()
+        }
+        return newString.toByteArray(Charset.forName("EUC-KR"))
     }
 
     fun print(view: View) {
+        val editTextInput = findViewById<EditText>(R.id.editTextInput)
+        val bytes = parse(editTextInput.text.toString())
+
         usbConnection.claimInterface(usbInterface, true)
-        usbConnection.bulkTransfer(usbEndpoint, printContent.toByteArray(), printContent.size, 0)
+        usbConnection.bulkTransfer(usbEndpoint, bytes, bytes.size, 0)
     }
 }
