@@ -1,60 +1,58 @@
 package com.kjh.posreceiptprinter
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.usb.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.EditText
-import android.widget.TextView
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import java.nio.charset.Charset
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var usbInterface: UsbInterface
-    private lateinit var usbEndpoint: UsbEndpoint
-    private lateinit var usbConnection: UsbDeviceConnection
+    companion object {
+        lateinit var printer: Printer
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.toolbarMain))
 
         val manager = getSystemService(Context.USB_SERVICE) as UsbManager
-
         val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
-        val textViewInfo = findViewById<TextView>(R.id.textViewInfo)
-        textViewInfo.text = device.toString()
         if (device == null) {
             val dialog = AlertDialog.Builder(this)
-                    .setTitle(R.string.dialog_no_usb_title)
-                    .setMessage(R.string.dialog_no_usb_message)
-                    .setPositiveButton(R.string.dialog_ok) { _, _ -> finishAndRemoveTask() }
-                    .setOnDismissListener { finishAndRemoveTask() }
-                    .create()
+                .setTitle(R.string.dialog_no_usb_title)
+                .setMessage(R.string.dialog_no_usb_message)
+                .setPositiveButton(R.string.dialog_ok) { _, _ -> finishAndRemoveTask() }
+//                .setOnDismissListener { finishAndRemoveTask() }
+                .create()
             dialog.show()
             return
         }
 
-        // TODO: Search for valid interface/endpoint instead of using index 0
-        usbInterface = device.getInterface(0)
-        usbEndpoint = usbInterface.getEndpoint(0)
-        usbConnection = manager.openDevice(device)
+        printer = Printer(manager, device)
     }
 
-    private fun parseHexEscapes(stringWithHex: String): ByteArray {
-        val hexEscape = Regex("""\\x[0-9a-fA-F]{2}""")
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
-        val newString = hexEscape.replace(stringWithHex) { match ->
-            match.value.substring(2).toInt(16).toChar().toString()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuItemDebug -> {
+                val intent = Intent(this, DebugActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menuItemSettings -> {
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
-        return newString.toByteArray(Charset.forName("EUC-KR"))
-    }
-
-    fun print(view: View) {
-        val editTextInput = findViewById<EditText>(R.id.editTextInput)
-        val bytes = parseHexEscapes(editTextInput.text.toString())
-
-        usbConnection.claimInterface(usbInterface, true)
-        usbConnection.bulkTransfer(usbEndpoint, bytes, bytes.size, 0)
     }
 }
