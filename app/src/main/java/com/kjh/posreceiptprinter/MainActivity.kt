@@ -7,7 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -31,8 +36,12 @@ class MainActivity : AppCompatActivity() {
             dialog.show()
             return
         }
-
         printer = Printer(manager, device)
+
+        val products = Array(12) { it.toString() }
+        val recyclerViewProducts = findViewById<RecyclerView>(R.id.recyclerViewProducts)
+        recyclerViewProducts.layoutManager = GridLayoutManager(this, 5)
+        recyclerViewProducts.adapter = RecyclerViewProductsAdapter(products, ::onProductButtonClick)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -54,5 +63,10 @@ class MainActivity : AppCompatActivity() {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    private fun onProductButtonClick(view: View) {
+        val textView = view as TextView
+        Toast.makeText(applicationContext, textView.text, Toast.LENGTH_SHORT).show()
     }
 }

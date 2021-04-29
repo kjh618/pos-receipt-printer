@@ -16,4 +16,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewReceipt"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerViewProducts"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProducts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="7"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewReceipt"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
