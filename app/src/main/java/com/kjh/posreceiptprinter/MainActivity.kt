@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
         printer = Printer(manager, device)
 
-        val products = Array(12) { it.toString() }
+        val products = Array(12) { Product("상품 ${it + 1}", 10000 + it) }
         val recyclerViewProducts = findViewById<RecyclerView>(R.id.recyclerViewProducts)
         recyclerViewProducts.layoutManager = GridLayoutManager(this, 5)
         recyclerViewProducts.adapter = RecyclerViewProductsAdapter(products, ::onProductButtonClick)
@@ -65,8 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onProductButtonClick(view: View) {
-        val textView = view as TextView
-        Toast.makeText(applicationContext, textView.text, Toast.LENGTH_SHORT).show()
+    private fun onProductButtonClick(product: Product) {
+        Toast.makeText(applicationContext, product.toString(), Toast.LENGTH_SHORT).show()
     }
 }

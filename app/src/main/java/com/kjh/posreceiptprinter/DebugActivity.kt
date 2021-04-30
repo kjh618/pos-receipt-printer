@@ -13,7 +13,7 @@ class DebugActivity : AppCompatActivity() {
         setContentView(R.layout.activity_debug)
         setSupportActionBar(findViewById(R.id.toolbarDebug))
 
-        val textViewInfo = findViewById<TextView>(R.id.textViewInfo)
+        val textViewInfo = findViewById<TextView>(R.id.textViewUsbInfo)
         textViewInfo.text = MainActivity.printer.usbDeviceToString()
     }
 
@@ -27,7 +27,7 @@ class DebugActivity : AppCompatActivity() {
     }
 
     fun print(view: View) {
-        val editTextInput = findViewById<EditText>(R.id.editTextInput)
+        val editTextInput = findViewById<EditText>(R.id.editTextPrintContent)
         val bytes = parseHexEscapes(editTextInput.text.toString())
         MainActivity.printer.print(bytes)
     }

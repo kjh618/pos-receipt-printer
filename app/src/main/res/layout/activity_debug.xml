@@ -8,27 +8,29 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarDebug"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.POSReceiptPrinter.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight" />
 
     <TextView
-        android:id="@+id/textViewInfoTitle"
+        android:id="@+id/textViewUsbInfoTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/text_view_info_title"
+        android:text="@string/text_view_usb_info_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarDebug" />
 
     <TextView
-        android:id="@+id/textViewInfo"
+        android:id="@+id/textViewUsbInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -37,21 +39,21 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewInfoTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewUsbInfoTitle" />
 
     <TextView
-        android:id="@+id/textViewInputTitle"
+        android:id="@+id/textViewPrintContentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/text_view_input_title"
+        android:text="@string/text_view_print_content_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewUsbInfo" />
 
     <EditText
-        android:id="@+id/editTextInput"
+        android:id="@+id/editTextPrintContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -62,10 +64,10 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewInputTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPrintContentTitle" />
 
     <Button
-        android:id="@+id/buttonPrint"
+        android:id="@+id/buttonPrintContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -73,6 +75,6 @@
         android:text="@string/button_print"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextInput" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPrintContent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
