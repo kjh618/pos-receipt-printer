@@ -5,16 +5,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.kjh.posreceiptprinter.databinding.ActivityDebugBinding
 import java.nio.charset.Charset
 
 class DebugActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityDebugBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_debug)
-        setSupportActionBar(findViewById(R.id.toolbarDebug))
+        binding = ActivityDebugBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbarDebug)
 
-        val textViewInfo = findViewById<TextView>(R.id.textViewUsbInfo)
-        textViewInfo.text = MainActivity.printer.usbDeviceToString()
+        binding.textViewPrinterInfo.text = Printer.toString()
     }
 
     private fun parseHexEscapes(stringWithHex: String): ByteArray {
@@ -27,8 +31,11 @@ class DebugActivity : AppCompatActivity() {
     }
 
     fun print(view: View) {
-        val editTextInput = findViewById<EditText>(R.id.editTextPrintContent)
-        val bytes = parseHexEscapes(editTextInput.text.toString())
-        MainActivity.printer.print(bytes)
+        if (Printer.isInitialized) {
+            val bytes = parseHexEscapes(binding.editTextPrintContent.text.toString())
+            Printer.print(bytes)
+        } else {
+            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
+        }
     }
 }

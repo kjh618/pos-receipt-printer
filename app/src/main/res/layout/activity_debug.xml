@@ -19,18 +19,18 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight" />
 
     <TextView
-        android:id="@+id/textViewUsbInfoTitle"
+        android:id="@+id/textViewPrinterInfoTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/text_view_usb_info_title"
+        android:text="@string/text_view_printer_info_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarDebug" />
 
     <TextView
-        android:id="@+id/textViewUsbInfo"
+        android:id="@+id/textViewPrinterInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -39,7 +39,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUsbInfoTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPrinterInfoTitle" />
 
     <TextView
         android:id="@+id/textViewPrintContentTitle"
@@ -50,7 +50,7 @@
         android:text="@string/text_view_print_content_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUsbInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPrinterInfo" />
 
     <EditText
         android:id="@+id/editTextPrintContent"

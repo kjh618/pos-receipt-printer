@@ -8,40 +8,37 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
+import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        lateinit var printer: Printer
-    }
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var model: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbarMain))
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbarMain)
+        model = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val manager = getSystemService(Context.USB_SERVICE) as UsbManager
-        val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
-        if (device == null) {
-            val dialog = AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_no_usb_title)
-                .setMessage(R.string.dialog_no_usb_message)
-                .setPositiveButton(R.string.dialog_ok) { _, _ -> finishAndRemoveTask() }
-//                .setOnDismissListener { finishAndRemoveTask() }
-                .create()
-            dialog.show()
-            return
+        if (!Printer.isInitialized) {
+            val manager = getSystemService(Context.USB_SERVICE) as UsbManager
+            val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
+            if (device != null) {
+                Printer.init(manager, device)
+            }
         }
-        printer = Printer(manager, device)
 
-        val products = Array(12) { Product("상품 ${it + 1}", 10000 + it) }
-        val recyclerViewProducts = findViewById<RecyclerView>(R.id.recyclerViewProducts)
-        recyclerViewProducts.layoutManager = GridLayoutManager(this, 5)
-        recyclerViewProducts.adapter = RecyclerViewProductsAdapter(products, ::onProductButtonClick)
+        binding.recyclerViewProducts.let {
+            it.layoutManager = GridLayoutManager(this, 5)
+            it.adapter = RecyclerViewProductsAdapter(model.products, ::onButtonProductClick)
+        }
+
+        model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -65,7 +62,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onProductButtonClick(product: Product) {
-        Toast.makeText(applicationContext, product.toString(), Toast.LENGTH_SHORT).show()
+    private fun onButtonProductClick(product: String) {
+        Toast.makeText(applicationContext, product, Toast.LENGTH_SHORT).show()
+    }
+
+    fun onButtonNumClick(view: View) {
+        val button = view as Button
+        model.currentNum.value = model.currentNum.value + button.text
+    }
+
+    fun onButtonDeleteClick(view: View) {
+        model.currentNum.value = model.currentNum.value?.dropLast(1)
+    }
+
+    fun onButtonEnterClick(view: View) {
+        Toast.makeText(applicationContext, model.currentNum.value, Toast.LENGTH_SHORT).show()
+        model.currentNum.value = ""
+    }
+
+    fun print(view: View) {
+        if (Printer.isInitialized) {
+            Toast.makeText(applicationContext, "TODO", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
+        }
     }
 }
