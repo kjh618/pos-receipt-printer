@@ -5,6 +5,7 @@ import android.content.Intent
 import android.hardware.usb.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +32,20 @@ class MainActivity : AppCompatActivity() {
             val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
             if (device != null) {
                 Printer.initialize(manager, device)
+            } else {
+                Log.w("MainActivity", "No USB device detected")
+                Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
             }
+        }
+
+        val receiptItemsAdapter = ReceiptItemsAdapter()
+        model.receipt.observe(this, {
+            receiptItemsAdapter.submitList(it)
+            binding.recyclerViewReceipt.smoothScrollToPosition(it.size)
+        })
+        binding.recyclerViewReceipt.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = receiptItemsAdapter
         }
 
         binding.recyclerViewProducts.apply {
@@ -63,16 +78,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onButtonProductClick(product: String) {
-        Toast.makeText(applicationContext, product, Toast.LENGTH_SHORT).show()
+        val id = model.receipt.value!!.size + 1
+        val newReceiptItem = ReceiptItem(id, product)
+        model.receipt.value = model.receipt.value!! + newReceiptItem
+        Log.d("MainActivity", "Added $newReceiptItem to receipt")
     }
 
     fun onButtonNumClick(view: View) {
         val button = view as Button
-        model.currentNum.value = model.currentNum.value + button.text
+        model.currentNum.value = model.currentNum.value!! + button.text
     }
 
     fun onButtonDeleteClick(view: View) {
-        model.currentNum.value = model.currentNum.value?.dropLast(1)
+        model.currentNum.value = model.currentNum.value!!.dropLast(1)
     }
 
     fun onButtonEnterClick(view: View) {
@@ -82,7 +100,9 @@ class MainActivity : AppCompatActivity() {
 
     fun print(view: View) {
         if (Printer.isInitialized) {
+            // TODO
             Toast.makeText(applicationContext, "TODO", Toast.LENGTH_SHORT).show()
+            model.receipt.value = emptyList()
         } else {
             Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
         }

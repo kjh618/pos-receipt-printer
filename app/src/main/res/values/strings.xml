@@ -6,6 +6,6 @@
     <string name="menu_item_settings">설정</string>
     <string name="menu_item_debug">디버그  화면</string>
     <string name="button_enter">입력 ↵</string>
-    <string name="toast_no_printer">프린터 없음</string>
+    <string name="toast_no_printer">프린터 연결되지 않음</string>
     <string name="button_delete">←</string>
 </resources>
