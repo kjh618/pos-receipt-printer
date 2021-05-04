@@ -29,13 +29,13 @@ class MainActivity : AppCompatActivity() {
             val manager = getSystemService(Context.USB_SERVICE) as UsbManager
             val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
             if (device != null) {
-                Printer.init(manager, device)
+                Printer.initialize(manager, device)
             }
         }
 
-        binding.recyclerViewProducts.let {
-            it.layoutManager = GridLayoutManager(this, 5)
-            it.adapter = RecyclerViewProductsAdapter(model.products, ::onButtonProductClick)
+        binding.recyclerViewProducts.apply {
+            layoutManager = GridLayoutManager(this@MainActivity, 5)
+            adapter = ProductsAdapter(model.products, ::onButtonProductClick)
         }
 
         model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
