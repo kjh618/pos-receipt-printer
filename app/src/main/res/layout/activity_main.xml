@@ -236,7 +236,7 @@
             android:id="@+id/buttonPrintReceipt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="print"
+            android:onClick="onButtonPrintClick"
             android:text="@string/button_print"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

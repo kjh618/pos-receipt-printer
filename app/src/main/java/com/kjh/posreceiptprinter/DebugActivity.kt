@@ -30,7 +30,7 @@ class DebugActivity : AppCompatActivity() {
         return newString.toByteArray(Charset.forName("EUC-KR"))
     }
 
-    fun print(view: View) {
+    fun onButtonPrintClick(view: View) {
         if (Printer.isInitialized) {
             val bytes = parseHexEscapes(binding.editTextPrintContent.text.toString())
             Printer.print(bytes)

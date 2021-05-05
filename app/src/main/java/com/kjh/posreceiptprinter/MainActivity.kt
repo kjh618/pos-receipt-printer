@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         model.currentNum.value = ""
     }
 
-    fun print(view: View) {
+    fun onButtonPrintClick(view: View) {
         if (Printer.isInitialized) {
             // TODO
             Toast.makeText(applicationContext, "TODO", Toast.LENGTH_SHORT).show()
