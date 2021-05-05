@@ -12,6 +12,9 @@ class ReceiptItemsAdapter : ListAdapter<ReceiptItem, ReceiptItemsAdapter.ViewHol
     class ViewHolder(private val binding: ReceiptItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(receiptItem: ReceiptItem) {
             binding.textViewProduct.text = receiptItem.product
+            binding.textViewUnitPrice.text = receiptItem.unitPrice.toString()
+            binding.textViewAmount.text = receiptItem.amount.toString()
+            binding.textViewTotalPrice.text = receiptItem.totalPrice.toString()
         }
     }
 

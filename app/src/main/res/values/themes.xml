@@ -17,4 +17,11 @@
     <style name="ThemeOverlay.POSReceiptPrinter.ActionBar" parent="ThemeOverlay.AppCompat.DayNight.ActionBar">
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
     </style>
+
+    <style name="TextAppearance.POSReceiptPrinter.Title" parent="TextAppearance.AppCompat.Title">
+    </style>
+    <style name="TextAppearance.POSReceiptPrinter.Body" parent="TextAppearance.AppCompat.Body1">
+    </style>
+    <style name="TextAppearance.POSReceiptPrinter.Button" parent="TextAppearance.AppCompat.Button">
+    </style>
 </resources>

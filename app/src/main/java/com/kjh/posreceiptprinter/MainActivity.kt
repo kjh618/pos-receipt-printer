@@ -78,9 +78,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onButtonProductClick(product: String) {
-        val id = model.receipt.value!!.size + 1
-        val newReceiptItem = ReceiptItem(id, product)
+        model.receiptItemId++
+
+        val newReceiptItem = ReceiptItem(model.receiptItemId, product)
         model.receipt.value = model.receipt.value!! + newReceiptItem
+
         Log.d("MainActivity", "Added $newReceiptItem to receipt")
     }
 

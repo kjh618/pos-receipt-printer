@@ -74,7 +74,7 @@
             android:id="@+id/textViewCurrentNum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             app:layout_constraintBaseline_toBaselineOf="@+id/buttonDelete"
             app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
             app:layout_constraintStart_toStartOf="parent" />
@@ -86,6 +86,7 @@
             android:layout_height="wrap_content"
             android:onClick="onButtonDeleteClick"
             android:text="@string/button_delete"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textViewCurrentNum"
             app:layout_constraintTop_toTopOf="parent" />
@@ -105,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="1"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintEnd_toStartOf="@+id/buttonNum2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -115,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="2"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum1"
                 app:layout_constraintEnd_toStartOf="@+id/buttonNum3"
                 app:layout_constraintStart_toEndOf="@+id/buttonNum1" />
@@ -125,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="3"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/buttonNum2" />
@@ -135,6 +139,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="4"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintEnd_toStartOf="@id/buttonNum5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonNum1" />
@@ -145,6 +150,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="5"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintBaseline_toBaselineOf="@id/buttonNum4"
                 app:layout_constraintEnd_toStartOf="@id/buttonNum6"
                 app:layout_constraintStart_toEndOf="@id/buttonNum4" />
@@ -155,6 +161,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="6"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintBaseline_toBaselineOf="@id/buttonNum4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/buttonNum5" />
@@ -165,6 +172,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="7"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintEnd_toStartOf="@+id/buttonNum8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonNum4" />
@@ -175,6 +183,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="8"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum7"
                 app:layout_constraintEnd_toStartOf="@+id/buttonNum9"
                 app:layout_constraintStart_toEndOf="@+id/buttonNum7" />
@@ -185,6 +194,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="9"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/buttonNum8" />
@@ -195,6 +205,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="00"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintEnd_toStartOf="@+id/buttonNum0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonNum7" />
@@ -205,6 +216,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="0"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum00"
                 app:layout_constraintEnd_toStartOf="@+id/buttonNum000"
                 app:layout_constraintStart_toEndOf="@+id/buttonNum00" />
@@ -215,6 +227,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onButtonNumClick"
                 android:text="000"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum00"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/buttonNum0" />
@@ -228,6 +241,7 @@
             android:layout_marginTop="8dp"
             android:onClick="onButtonEnterClick"
             android:text="@string/button_enter"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayoutNumpad" />
@@ -238,6 +252,7 @@
             android:layout_height="wrap_content"
             android:onClick="onButtonPrintClick"
             android:text="@string/button_print"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
