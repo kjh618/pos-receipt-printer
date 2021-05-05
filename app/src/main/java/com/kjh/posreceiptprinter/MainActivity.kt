@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerViewProducts.apply {
             layoutManager = GridLayoutManager(this@MainActivity, 5)
-            adapter = ProductsAdapter(model.products, ::onButtonProductClick)
+            adapter = ProductsAdapter(model.products)
         }
 
         model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
@@ -77,30 +77,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onButtonProductClick(product: String) {
+    fun onClickButtonProduct(view: View) {
         model.receiptItemId++
-
+        val product = (view as Button).text.toString()
         val newReceiptItem = ReceiptItem(model.receiptItemId, product)
         model.receipt.value = model.receipt.value!! + newReceiptItem
 
         Log.d("MainActivity", "Added $newReceiptItem to receipt")
     }
 
-    fun onButtonNumClick(view: View) {
-        val button = view as Button
-        model.currentNum.value = model.currentNum.value!! + button.text
+    fun onClickButtonDigits(view: View) {
+        val newDigits = (view as Button).text
+        model.currentNum.value = model.currentNum.value!! + newDigits
     }
 
-    fun onButtonDeleteClick(view: View) {
+    fun onClickButtonDelete(view: View) {
         model.currentNum.value = model.currentNum.value!!.dropLast(1)
     }
 
-    fun onButtonEnterClick(view: View) {
+    fun onClickButtonEnter(view: View) {
         Toast.makeText(applicationContext, model.currentNum.value, Toast.LENGTH_SHORT).show()
         model.currentNum.value = ""
     }
 
-    fun onButtonPrintClick(view: View) {
+    fun onClickButtonPrint(view: View) {
         if (Printer.isInitialized) {
             // TODO
             Toast.makeText(applicationContext, "TODO", Toast.LENGTH_SHORT).show()

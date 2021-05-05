@@ -5,15 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ButtonProductBinding
 
-class ProductsAdapter(
-    private val products: Array<String>,
-    private val onClick: (String) -> Unit,
-) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
+class ProductsAdapter(private val products: Array<String>) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ButtonProductBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(product: String, onClick: (String) -> Unit) {
+        fun bind(product: String) {
             binding.buttonProduct.text = product
-            binding.buttonProduct.setOnClickListener { onClick(product) }
         }
     }
 
@@ -23,7 +19,7 @@ class ProductsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(products[position], onClick)
+        holder.bind(products[position])
     }
 
     override fun getItemCount(): Int {

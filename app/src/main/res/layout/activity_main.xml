@@ -31,15 +31,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMain">
 
+        <TextView
+            android:id="@+id/textViewProductHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/text_view_product_header"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewUnitPriceHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewUnitPriceHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/text_view_unit_price_header"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewAmountHeader"
+            app:layout_constraintStart_toEndOf="@+id/textViewProductHeader"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewAmountHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/text_view_amout_header"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewTotalPriceHeader"
+            app:layout_constraintStart_toEndOf="@+id/textViewUnitPriceHeader"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewTotalPriceHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/text_view_total_price_header"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewAmountHeader"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReceipt"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewProductHeader" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -84,7 +133,7 @@
             style="@style/Widget.AppCompat.Button.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onButtonDeleteClick"
+            android:onClick="onClickButtonDelete"
             android:text="@string/button_delete"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
             app:layout_constraintEnd_toEndOf="parent"
@@ -101,136 +150,136 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonDelete">
 
             <Button
-                android:id="@+id/buttonNum1"
+                android:id="@+id/buttonDigit1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="1"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintEnd_toStartOf="@+id/buttonNum2"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDigit2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/buttonNum2"
+                android:id="@+id/buttonDigit2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="2"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum1"
-                app:layout_constraintEnd_toStartOf="@+id/buttonNum3"
-                app:layout_constraintStart_toEndOf="@+id/buttonNum1" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonDigit1"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDigit3"
+                app:layout_constraintStart_toEndOf="@+id/buttonDigit1" />
 
             <Button
-                android:id="@+id/buttonNum3"
+                android:id="@+id/buttonDigit3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="3"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum1"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonDigit1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonNum2" />
+                app:layout_constraintStart_toEndOf="@+id/buttonDigit2" />
 
             <Button
-                android:id="@+id/buttonNum4"
+                android:id="@+id/buttonDigit4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="4"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintEnd_toStartOf="@id/buttonNum5"
+                app:layout_constraintEnd_toStartOf="@id/buttonDigit5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonNum1" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonDigit1" />
 
             <Button
-                android:id="@+id/buttonNum5"
+                android:id="@+id/buttonDigit5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="5"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintBaseline_toBaselineOf="@id/buttonNum4"
-                app:layout_constraintEnd_toStartOf="@id/buttonNum6"
-                app:layout_constraintStart_toEndOf="@id/buttonNum4" />
+                app:layout_constraintBaseline_toBaselineOf="@id/buttonDigit4"
+                app:layout_constraintEnd_toStartOf="@id/buttonDigit6"
+                app:layout_constraintStart_toEndOf="@id/buttonDigit4" />
 
             <Button
-                android:id="@+id/buttonNum6"
+                android:id="@+id/buttonDigit6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="6"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintBaseline_toBaselineOf="@id/buttonNum4"
+                app:layout_constraintBaseline_toBaselineOf="@id/buttonDigit4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/buttonNum5" />
+                app:layout_constraintStart_toEndOf="@id/buttonDigit5" />
 
             <Button
-                android:id="@+id/buttonNum7"
+                android:id="@+id/buttonDigit7"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="7"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintEnd_toStartOf="@+id/buttonNum8"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDigit8"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonNum4" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonDigit4" />
 
             <Button
-                android:id="@+id/buttonNum8"
+                android:id="@+id/buttonDigit8"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="8"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum7"
-                app:layout_constraintEnd_toStartOf="@+id/buttonNum9"
-                app:layout_constraintStart_toEndOf="@+id/buttonNum7" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonDigit7"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDigit9"
+                app:layout_constraintStart_toEndOf="@+id/buttonDigit7" />
 
             <Button
-                android:id="@+id/buttonNum9"
+                android:id="@+id/buttonDigit9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="9"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum7"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonDigit7"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonNum8" />
+                app:layout_constraintStart_toEndOf="@+id/buttonDigit8" />
 
             <Button
-                android:id="@+id/buttonNum00"
+                android:id="@+id/buttonDigits00"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="00"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintEnd_toStartOf="@+id/buttonNum0"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDigit0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonNum7" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonDigit7" />
 
             <Button
-                android:id="@+id/buttonNum0"
+                android:id="@+id/buttonDigit0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="0"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum00"
-                app:layout_constraintEnd_toStartOf="@+id/buttonNum000"
-                app:layout_constraintStart_toEndOf="@+id/buttonNum00" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonDigits00"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDigits000"
+                app:layout_constraintStart_toEndOf="@+id/buttonDigits00" />
 
             <Button
-                android:id="@+id/buttonNum000"
+                android:id="@+id/buttonDigits000"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onButtonNumClick"
+                android:onClick="onClickButtonDigits"
                 android:text="000"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum00"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonDigits00"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonNum0" />
+                app:layout_constraintStart_toEndOf="@+id/buttonDigit0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -239,7 +288,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:onClick="onButtonEnterClick"
+            android:onClick="onClickButtonEnter"
             android:text="@string/button_enter"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
             app:layout_constraintEnd_toEndOf="parent"
@@ -250,7 +299,7 @@
             android:id="@+id/buttonPrintReceipt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="onButtonPrintClick"
+            android:onClick="onClickButtonPrint"
             android:text="@string/button_print"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
             app:layout_constraintBottom_toBottomOf="parent"
