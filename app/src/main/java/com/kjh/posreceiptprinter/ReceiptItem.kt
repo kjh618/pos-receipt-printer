@@ -3,9 +3,23 @@ package com.kjh.posreceiptprinter
 data class ReceiptItem(
     val id: Long,
     val product: String,
-    val unitPrice: Int? = null,
-    val amount: Int? = null,
+    var unitPrice: Int? = null,
+    var amount: Int? = null,
 ) {
     val totalPrice: Int?
-        get() = if (unitPrice != null && amount != null) unitPrice * amount else null
+        get() {
+            val unitPrice = unitPrice ?: return null
+            val amount = amount ?: return null
+            return unitPrice * amount
+        }
+    val isComplete: Boolean
+        get() = unitPrice != null && amount != null
+
+    fun setUnitPriceOrAmount(value: Int) {
+        if (unitPrice == null) {
+            unitPrice = value
+        } else if (amount == null) {
+            amount = value
+        }
+    }
 }

@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/receipt_item"
-    android:onClick="onClickReceiptItem">
+    android:background="@drawable/receipt_item">
 
     <TextView
         android:id="@+id/textViewProduct"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewUnitPrice"
@@ -23,10 +24,9 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewProduct"
         app:layout_constraintEnd_toStartOf="@+id/textViewAmount"
-        app:layout_constraintStart_toEndOf="@+id/textViewProduct"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/textViewProduct" />
 
     <TextView
         android:id="@+id/textViewAmount"
@@ -34,10 +34,9 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewProduct"
         app:layout_constraintEnd_toStartOf="@+id/textViewTotalPrice"
-        app:layout_constraintStart_toEndOf="@+id/textViewUnitPrice"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/textViewUnitPrice" />
 
     <TextView
         android:id="@+id/textViewTotalPrice"
@@ -45,8 +44,7 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewProduct"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewAmount"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/textViewAmount" />
 </androidx.constraintlayout.widget.ConstraintLayout>

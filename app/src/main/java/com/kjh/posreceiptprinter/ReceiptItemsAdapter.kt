@@ -1,31 +1,33 @@
 package com.kjh.posreceiptprinter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ReceiptItemBinding
 
+// TODO: Use regular RecyclerView.Adapter instead of ListAdapter?
 class ReceiptItemsAdapter : ListAdapter<ReceiptItem, ReceiptItemsAdapter.ViewHolder>(ReceiptItemDiffCallback) {
-    private var selectedPosition: Int = RecyclerView.NO_POSITION
+    var selectedPosition: Int = RecyclerView.NO_POSITION
+        set(newSelectedPosition) {
+            notifyItemChanged(field)
+            field = newSelectedPosition
+            notifyItemChanged(field)
+        }
+    val selectedItem: ReceiptItem
+        get() = getItem(selectedPosition)
 
     inner class ViewHolder(private val binding: ReceiptItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener {
-                notifyItemChanged(selectedPosition)
-                selectedPosition = layoutPosition
-                notifyItemChanged(selectedPosition)
-            }
+            binding.root.setOnClickListener { selectedPosition = layoutPosition }
         }
 
         fun bind(receiptItem: ReceiptItem, isSelected: Boolean) {
             binding.textViewProduct.text = receiptItem.product
-            binding.textViewUnitPrice.text = receiptItem.unitPrice.toString()
-            binding.textViewAmount.text = receiptItem.amount.toString()
-            binding.textViewTotalPrice.text = receiptItem.totalPrice.toString()
+            binding.textViewUnitPrice.text = receiptItem.unitPrice?.toString()
+            binding.textViewAmount.text = receiptItem.amount?.toString()
+            binding.textViewTotalPrice.text = receiptItem.totalPrice?.toString()
 
             binding.root.isActivated = isSelected
         }

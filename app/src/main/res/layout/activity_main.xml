@@ -51,9 +51,9 @@
             android:text="@string/text_view_unit_price_header"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
             app:layout_constraintEnd_toStartOf="@+id/textViewAmountHeader"
-            app:layout_constraintStart_toEndOf="@+id/textViewProductHeader"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/textViewProductHeader" />
 
         <TextView
             android:id="@+id/textViewAmountHeader"
@@ -63,9 +63,9 @@
             android:text="@string/text_view_amout_header"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
             app:layout_constraintEnd_toStartOf="@+id/textViewTotalPriceHeader"
-            app:layout_constraintStart_toEndOf="@+id/textViewUnitPriceHeader"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/textViewUnitPriceHeader" />
 
         <TextView
             android:id="@+id/textViewTotalPriceHeader"
@@ -75,9 +75,9 @@
             android:text="@string/text_view_total_price_header"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewAmountHeader"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/textViewAmountHeader" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReceipt"
