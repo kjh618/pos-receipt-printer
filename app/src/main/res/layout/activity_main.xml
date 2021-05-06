@@ -27,7 +27,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/recyclerViewProducts"
-        app:layout_constraintHorizontal_weight="2.5"
+        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMain">
 
@@ -95,10 +95,11 @@
             android:id="@+id/textViewTotalPriceHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/text_view_total_price_header"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/buttonRemoveReceiptItem"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -112,6 +113,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textViewTotalPriceHeader" />
 
+        <Button
+            android:id="@+id/buttonRemoveReceiptItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickButtonRemoveReceiptItem"
+            android:text="@string/button_remove_receipt_item"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -124,7 +137,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/constraintLayoutInputs"
-        app:layout_constraintHorizontal_weight="5"
+        app:layout_constraintHorizontal_weight="4"
         app:layout_constraintStart_toEndOf="@+id/constraintLayoutReceipt"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
 
@@ -137,7 +150,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="2.5"
+        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintStart_toEndOf="@+id/recyclerViewProducts"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMain">
 
@@ -146,19 +159,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-            app:layout_constraintBaseline_toBaselineOf="@+id/buttonDelete"
-            app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
+            app:layout_constraintBaseline_toBaselineOf="@+id/buttonDeleteDigit"
+            app:layout_constraintEnd_toStartOf="@+id/buttonDeleteDigit"
+            app:layout_constraintHorizontal_weight="5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/buttonDelete"
-            style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="wrap_content"
+            android:id="@+id/buttonDeleteDigit"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="onClickButtonDelete"
-            android:text="@string/button_delete"
+            android:onClick="onClickButtonDeleteDigit"
+            android:text="@string/button_delete_digit"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/textViewCurrentNum"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -169,7 +183,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonDelete">
+            app:layout_constraintTop_toBottomOf="@+id/buttonDeleteDigit">
 
             <Button
                 android:id="@+id/buttonDigit1"

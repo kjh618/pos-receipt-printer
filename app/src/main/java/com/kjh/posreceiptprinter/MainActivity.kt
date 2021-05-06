@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.recyclerViewProducts.apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 5)
+            layoutManager = GridLayoutManager(this@MainActivity, 3)
             adapter = ProductsAdapter(model.products)
         }
 
@@ -80,6 +80,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun onClickButtonRemoveReceiptItem(view: View) {
+        val removeIndex = receiptItemsAdapter.selectedPosition
+        if (removeIndex == RecyclerView.NO_POSITION) {
+            return
+        }
+
+        model.receipt.value = with(model.receipt.value!!) {
+            subList(0, removeIndex) + subList(removeIndex + 1, size)
+        }
+
+        if (removeIndex == model.receipt.value!!.size) {
+            receiptItemsAdapter.selectedPosition = removeIndex - 1
+        } else {
+            receiptItemsAdapter.selectedPosition = removeIndex
+        }
+    }
+
     fun onClickButtonProduct(view: View) {
         model.receiptItemId++
         val product = (view as Button).text.toString()
@@ -96,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         model.currentNum.value = model.currentNum.value!! + newDigits
     }
 
-    fun onClickButtonDelete(view: View) {
+    fun onClickButtonDeleteDigit(view: View) {
         model.currentNum.value = model.currentNum.value!!.dropLast(1)
     }
 

@@ -9,7 +9,7 @@ class MainViewModel : ViewModel() {
     }
     var receiptItemId: Long = 0
 
-    val products: Array<String> = Array(12) { "상품 ${it + 1}" }
+    val products: Array<String> = Array(11) { "상품 ${it + 1}" }
 
     val currentNum: MutableLiveData<String> by lazy {
         MutableLiveData("")
