@@ -2,6 +2,7 @@ package com.kjh.posreceiptprinter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.hardware.usb.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -77,6 +78,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun onClickReceiptItem(view: View) {
+        view.isActivated = true
+    }
+
     fun onClickButtonProduct(view: View) {
         model.receiptItemId++
         val product = (view as Button).text.toString()
@@ -105,6 +110,7 @@ class MainActivity : AppCompatActivity() {
             // TODO
             Toast.makeText(applicationContext, "TODO", Toast.LENGTH_SHORT).show()
             model.receipt.value = emptyList()
+            model.receiptItemId = 0
         } else {
             Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
         }

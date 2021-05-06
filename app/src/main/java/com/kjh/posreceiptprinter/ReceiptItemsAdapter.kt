@@ -1,6 +1,8 @@
 package com.kjh.posreceiptprinter
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -8,13 +10,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ReceiptItemBinding
 
 class ReceiptItemsAdapter : ListAdapter<ReceiptItem, ReceiptItemsAdapter.ViewHolder>(ReceiptItemDiffCallback) {
+    private var selectedPosition: Int = RecyclerView.NO_POSITION
 
-    class ViewHolder(private val binding: ReceiptItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(receiptItem: ReceiptItem) {
+    inner class ViewHolder(private val binding: ReceiptItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                notifyItemChanged(selectedPosition)
+                selectedPosition = layoutPosition
+                notifyItemChanged(selectedPosition)
+            }
+        }
+
+        fun bind(receiptItem: ReceiptItem, isSelected: Boolean) {
             binding.textViewProduct.text = receiptItem.product
             binding.textViewUnitPrice.text = receiptItem.unitPrice.toString()
             binding.textViewAmount.text = receiptItem.amount.toString()
             binding.textViewTotalPrice.text = receiptItem.totalPrice.toString()
+
+            binding.root.isActivated = isSelected
         }
     }
 
@@ -24,7 +37,8 @@ class ReceiptItemsAdapter : ListAdapter<ReceiptItem, ReceiptItemsAdapter.ViewHol
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val receiptItem = getItem(position)
+        holder.bind(receiptItem, selectedPosition == position)
     }
 }
 

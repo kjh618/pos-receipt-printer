@@ -1,7 +1,7 @@
 package com.kjh.posreceiptprinter
 
 data class ReceiptItem(
-    val id: Int,
+    val id: Long,
     val product: String,
     val unitPrice: Int? = null,
     val amount: Int? = null,
