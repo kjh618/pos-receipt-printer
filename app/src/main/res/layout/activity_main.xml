@@ -52,43 +52,65 @@
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
-            app:layout_constraintEnd_toStartOf="@+id/textViewAmountHeader"
+            app:layout_constraintEnd_toStartOf="@+id/textViewQuantityHeader"
             app:layout_constraintStart_toEndOf="@+id/textViewProductHeader" />
 
         <TextView
-            android:id="@+id/textViewAmountHeader"
+            android:id="@+id/textViewQuantityHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/text_view_amout_header"
+            android:text="@string/text_view_quantity_header"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
-            app:layout_constraintEnd_toStartOf="@+id/textViewTotalPriceHeader"
+            app:layout_constraintEnd_toStartOf="@+id/textViewPriceHeader"
             app:layout_constraintStart_toEndOf="@+id/textViewUnitPriceHeader" />
 
         <TextView
-            android:id="@+id/textViewTotalPriceHeader"
+            android:id="@+id/textViewPriceHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/text_view_total_price_header"
+            android:text="@string/text_view_price_header"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewAmountHeader" />
+            app:layout_constraintStart_toEndOf="@+id/textViewQuantityHeader" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReceipt"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/textViewTotalPriceHeader"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewProductHeader" />
+
+        <TextView
+            android:id="@+id/textViewTotalPriceHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_total_price_header"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewTotalPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="0"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textViewTotalPriceHeader"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewTotalPriceHeader" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -152,7 +174,7 @@
             <Button
                 android:id="@+id/buttonDigit1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="1"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -163,7 +185,7 @@
             <Button
                 android:id="@+id/buttonDigit2"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="2"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -174,7 +196,7 @@
             <Button
                 android:id="@+id/buttonDigit3"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="3"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -185,7 +207,7 @@
             <Button
                 android:id="@+id/buttonDigit4"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="4"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -196,7 +218,7 @@
             <Button
                 android:id="@+id/buttonDigit5"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="5"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -207,7 +229,7 @@
             <Button
                 android:id="@+id/buttonDigit6"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="6"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -218,7 +240,7 @@
             <Button
                 android:id="@+id/buttonDigit7"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="7"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -229,7 +251,7 @@
             <Button
                 android:id="@+id/buttonDigit8"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="8"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -240,7 +262,7 @@
             <Button
                 android:id="@+id/buttonDigit9"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="9"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -251,7 +273,7 @@
             <Button
                 android:id="@+id/buttonDigits00"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="00"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -262,7 +284,7 @@
             <Button
                 android:id="@+id/buttonDigit0"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="0"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"
@@ -273,7 +295,7 @@
             <Button
                 android:id="@+id/buttonDigits000"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:onClick="onClickButtonDigits"
                 android:text="000"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button"

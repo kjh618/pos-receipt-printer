@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
                 Printer.initialize(manager, device)
             } else {
                 Log.w("MainActivity", "No USB device detected")
-                Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -101,11 +102,16 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickButtonEnter(view: View) {
         val value = model.currentNum.value!!.toInt()
+
         with(receiptItemsAdapter) {
             selectedItem.setUnitPriceOrAmount(value)
             notifyItemChanged(selectedPosition)
+
             if (selectedItem.isComplete) {
                 selectedPosition = RecyclerView.NO_POSITION
+                binding.textViewTotalPrice.text = model.receipt.value!!
+                    .sumOf { it.price ?: 0 }
+                    .toString()
             }
         }
 

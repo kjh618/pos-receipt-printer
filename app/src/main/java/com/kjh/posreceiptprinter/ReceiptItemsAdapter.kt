@@ -26,8 +26,8 @@ class ReceiptItemsAdapter : ListAdapter<ReceiptItem, ReceiptItemsAdapter.ViewHol
         fun bind(receiptItem: ReceiptItem, isSelected: Boolean) {
             binding.textViewProduct.text = receiptItem.product
             binding.textViewUnitPrice.text = receiptItem.unitPrice?.toString()
-            binding.textViewAmount.text = receiptItem.amount?.toString()
-            binding.textViewTotalPrice.text = receiptItem.totalPrice?.toString()
+            binding.textViewQuantity.text = receiptItem.quantity?.toString()
+            binding.textViewPrice.text = receiptItem.price?.toString()
 
             binding.root.isActivated = isSelected
         }
