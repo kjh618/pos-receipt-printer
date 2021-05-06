@@ -2,32 +2,29 @@ package com.kjh.posreceiptprinter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ReceiptItemBinding
 
-// TODO: Use regular RecyclerView.Adapter instead of ListAdapter?
-class ReceiptItemsAdapter : ListAdapter<ReceiptItem, ReceiptItemsAdapter.ViewHolder>(ReceiptItemDiffCallback) {
+class ReceiptItemsAdapter(private val receipt: MutableList<ReceiptItem>) :
+    RecyclerView.Adapter<ReceiptItemsAdapter.ViewHolder>() {
     var selectedPosition: Int = RecyclerView.NO_POSITION
         set(newSelectedPosition) {
             notifyItemChanged(field)
             field = newSelectedPosition
             notifyItemChanged(field)
         }
-    val selectedItem: ReceiptItem
-        get() = getItem(selectedPosition)
 
-    inner class ViewHolder(private val binding: ReceiptItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ReceiptItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener { selectedPosition = layoutPosition }
         }
 
-        fun bind(receiptItem: ReceiptItem, isSelected: Boolean) {
-            binding.textViewProduct.text = receiptItem.product
-            binding.textViewUnitPrice.text = receiptItem.unitPrice?.toString()
-            binding.textViewQuantity.text = receiptItem.quantity?.toString()
-            binding.textViewPrice.text = receiptItem.price?.toString()
+        fun bind(item: ReceiptItem, isSelected: Boolean) {
+            binding.textViewProduct.text = item.product
+            binding.textViewUnitPrice.text = item.unitPrice?.toString()
+            binding.textViewQuantity.text = item.quantity?.toString()
+            binding.textViewPrice.text = item.price?.toString()
 
             binding.root.isActivated = isSelected
         }
@@ -39,17 +36,51 @@ class ReceiptItemsAdapter : ListAdapter<ReceiptItem, ReceiptItemsAdapter.ViewHol
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val receiptItem = getItem(position)
-        holder.bind(receiptItem, selectedPosition == position)
-    }
-}
-
-object ReceiptItemDiffCallback : DiffUtil.ItemCallback<ReceiptItem>() {
-    override fun areItemsTheSame(oldItem: ReceiptItem, newItem: ReceiptItem): Boolean {
-        return oldItem.id == newItem.id
+        val item = receipt[position]
+        holder.bind(item, selectedPosition == position)
     }
 
-    override fun areContentsTheSame(oldItem: ReceiptItem, newItem: ReceiptItem): Boolean {
-        return oldItem == newItem
+    override fun getItemCount(): Int {
+        return receipt.size
+    }
+
+    fun addItem(item: ReceiptItem) {
+        receipt.add(item)
+        notifyItemInserted(receipt.size - 1)
+        selectedPosition = receipt.size - 1
+    }
+
+    fun setSelectedItemUnitPriceOrAmount(value: Int): Boolean {
+        if (selectedPosition == RecyclerView.NO_POSITION) {
+            return false
+        }
+
+        val selectedItem = receipt[selectedPosition]
+        selectedItem.setUnitPriceOrAmount(value)
+        notifyItemChanged(selectedPosition)
+        if (selectedItem.isComplete) {
+            selectedPosition = RecyclerView.NO_POSITION
+        }
+
+        return selectedItem.isComplete
+    }
+
+    fun removeSelectedItem() {
+        if (selectedPosition == RecyclerView.NO_POSITION) {
+            return
+        }
+
+        receipt.removeAt(selectedPosition)
+        notifyItemRemoved(selectedPosition)
+        selectedPosition = when {
+            receipt.isEmpty() -> RecyclerView.NO_POSITION
+            selectedPosition == receipt.size -> selectedPosition - 1
+            else -> selectedPosition
+        }
+    }
+
+    fun clearItems() {
+        receipt.clear()
+        notifyDataSetChanged()
     }
 }

@@ -5,16 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ButtonProductBinding
 
-class ProductsAdapter(private val products: Array<String>) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
+class ProductsAdapter(private val products: Array<String>) :
+    RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: ButtonProductBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ButtonProductBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(product: String) {
             binding.buttonProduct.text = product
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ButtonProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ButtonProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

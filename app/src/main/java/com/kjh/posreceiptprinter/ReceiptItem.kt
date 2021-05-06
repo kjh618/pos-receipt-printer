@@ -6,11 +6,11 @@ data class ReceiptItem(
     var unitPrice: Int? = null,
     var quantity: Int? = null,
 ) {
-    val price: Int?
+    val price: Long?
         get() {
             val unitPrice = unitPrice ?: return null
             val amount = quantity ?: return null
-            return unitPrice * amount
+            return unitPrice.toLong() * amount
         }
     val isComplete: Boolean
         get() = unitPrice != null && quantity != null

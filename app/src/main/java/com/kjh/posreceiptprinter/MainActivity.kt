@@ -3,7 +3,6 @@ package com.kjh.posreceiptprinter
 import android.content.Context
 import android.content.Intent
 import android.hardware.usb.*
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,11 +41,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        receiptItemsAdapter = ReceiptItemsAdapter()
-        model.receipt.observe(this, {
-            receiptItemsAdapter.submitList(it)
-            binding.recyclerViewReceipt.smoothScrollToPosition(it.size)
-        })
+        receiptItemsAdapter = ReceiptItemsAdapter(model.receipt)
         binding.recyclerViewReceipt.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = receiptItemsAdapter
@@ -72,6 +68,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.menuItemSettings -> {
+                // TODO: Settings
                 true
             }
             else -> {
@@ -81,31 +78,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonRemoveReceiptItem(view: View) {
-        val removeIndex = receiptItemsAdapter.selectedPosition
-        if (removeIndex == RecyclerView.NO_POSITION) {
-            return
+        with(receiptItemsAdapter) {
+            removeSelectedItem()
+            if (selectedPosition != RecyclerView.NO_POSITION) {
+                binding.recyclerViewReceipt.smoothScrollToPosition(selectedPosition)
+            }
         }
-
-        model.receipt.value = with(model.receipt.value!!) {
-            subList(0, removeIndex) + subList(removeIndex + 1, size)
-        }
-
-        if (removeIndex == model.receipt.value!!.size) {
-            receiptItemsAdapter.selectedPosition = removeIndex - 1
-        } else {
-            receiptItemsAdapter.selectedPosition = removeIndex
-        }
+        binding.textViewTotalPrice.text = model.receiptTotalPrice.toString()
     }
 
     fun onClickButtonProduct(view: View) {
         model.receiptItemId++
         val product = (view as Button).text.toString()
         val newReceiptItem = ReceiptItem(model.receiptItemId, product)
-        model.receipt.value = model.receipt.value!! + newReceiptItem
-
-        receiptItemsAdapter.selectedPosition = model.receipt.value!!.size - 1
-
-        Log.d("MainActivity", "Added $newReceiptItem to receipt")
+        receiptItemsAdapter.addItem(newReceiptItem)
+        binding.recyclerViewReceipt.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
     }
 
     fun onClickButtonDigits(view: View) {
@@ -118,18 +105,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonEnter(view: View) {
-        val value = model.currentNum.value!!.toInt()
+        if (receiptItemsAdapter.selectedPosition == RecyclerView.NO_POSITION) {
+            return
+        }
 
-        with(receiptItemsAdapter) {
-            selectedItem.setUnitPriceOrAmount(value)
-            notifyItemChanged(selectedPosition)
-
-            if (selectedItem.isComplete) {
-                selectedPosition = RecyclerView.NO_POSITION
-                binding.textViewTotalPrice.text = model.receipt.value!!
-                    .sumOf { it.price ?: 0 }
-                    .toString()
-            }
+        val value = model.currentNum.value!!.toIntOrNull() ?: return
+        binding.recyclerViewReceipt.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
+        val isComplete = receiptItemsAdapter.setSelectedItemUnitPriceOrAmount(value)
+        if (isComplete) {
+            binding.textViewTotalPrice.text = model.receiptTotalPrice.toString()
         }
 
         model.currentNum.value = ""
@@ -137,9 +121,11 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickButtonPrint(view: View) {
         if (Printer.isInitialized) {
-            // TODO
+            // TODO: Print receipt
             Toast.makeText(applicationContext, "TODO", Toast.LENGTH_SHORT).show()
-            model.receipt.value = emptyList()
+
+            receiptItemsAdapter.clearItems()
+            binding.textViewTotalPrice.text = model.receiptTotalPrice.toString()
             model.receiptItemId = 0
         } else {
             Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()

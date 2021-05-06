@@ -1,11 +1,9 @@
 package com.kjh.posreceiptprinter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.kjh.posreceiptprinter.databinding.ActivityDebugBinding
 import java.nio.charset.Charset
 
