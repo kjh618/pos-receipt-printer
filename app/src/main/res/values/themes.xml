@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.POSReceiptPrinter" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Theme.POSReceiptPrinter" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="ThemeOverlay.POSReceiptPrinter.ActionBar" parent="ThemeOverlay.AppCompat.DayNight.ActionBar">
+    <style name="ThemeOverlay.POSReceiptPrinter.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
     </style>
 

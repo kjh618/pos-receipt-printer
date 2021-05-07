@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">POS 영수증 프린터</string>
+    <string name="app_name">포스 영수증 프린터</string>
     <string name="button_print">⎙ 프린트</string>
     <string name="text_view_printer_info_title">프린터 정보</string>
     <string name="text_view_print_content_title">프린트 내용</string>
