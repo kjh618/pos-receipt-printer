@@ -12,10 +12,8 @@ data class ReceiptItem(
             val amount = quantity ?: return null
             return unitPrice.toLong() * amount
         }
-    val isComplete: Boolean
-        get() = unitPrice != null && quantity != null
 
-    fun setUnitPriceOrAmount(value: Int) {
+    fun setUnitPriceOrQuantity(value: Int) {
         if (unitPrice == null) {
             unitPrice = value
         } else if (quantity == null) {

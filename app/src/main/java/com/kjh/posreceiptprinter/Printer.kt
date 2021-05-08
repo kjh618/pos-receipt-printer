@@ -22,7 +22,7 @@ object Printer {
         usbConnection = manager.openDevice(usbDevice)
         usbConnection.claimInterface(usbInterface, true)
 
-        Log.i("Printer", "Printer initialized")
+        Log.i(this::class.simpleName, "Printer initialized")
     }
 
     override fun toString(): String {
@@ -34,7 +34,7 @@ object Printer {
     }
 
     fun print(bytes: ByteArray) {
-        Log.i("Printer", "Printing...")
+        Log.i(this::class.simpleName, "Printing...")
         usbConnection.bulkTransfer(usbEndpoint, bytes, bytes.size, 0)
     }
 }

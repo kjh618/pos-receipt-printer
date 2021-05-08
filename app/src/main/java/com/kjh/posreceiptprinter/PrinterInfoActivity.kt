@@ -28,7 +28,7 @@ class PrinterInfoActivity : AppCompatActivity() {
         return newString.toByteArray(Charset.forName("EUC-KR"))
     }
 
-    fun onClickButtonPrint(view: View) {
+    fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
         if (Printer.isInitialized) {
             val bytes = parseHexEscapes(binding.editTextPrintContent.text.toString())
             Printer.print(bytes)

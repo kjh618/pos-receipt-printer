@@ -15,8 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.Printer
+import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 
@@ -38,14 +38,15 @@ class MainActivity : AppCompatActivity() {
             if (device != null) {
                 Printer.initialize(manager, device)
             } else {
-                Log.w("MainActivity", "No USB device detected")
+                Log.w(this::class.simpleName, "No USB device detected")
                 Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
                     .show()
             }
         }
 
+        model.receipt.observeTotalPrice(this, { binding.textViewTotalPrice.text = it.toString() })
         receiptItemsAdapter = ReceiptItemsAdapter(model.receipt)
-        binding.recyclerViewReceipt.apply {
+        binding.recyclerViewReceiptItems.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = receiptItemsAdapter
         }
@@ -80,22 +81,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onClickButtonRemoveReceiptItem(view: View) {
-        with(receiptItemsAdapter) {
-            removeSelectedItem()
-            if (selectedPosition != RecyclerView.NO_POSITION) {
-                binding.recyclerViewReceipt.smoothScrollToPosition(selectedPosition)
-            }
+    fun onClickButtonRemoveReceiptItem(@Suppress("UNUSED_PARAMETER") view: View) {
+        receiptItemsAdapter.removeSelectedItem()
+        if (receiptItemsAdapter.selectedPosition != RecyclerView.NO_POSITION) {
+            binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
         }
-        binding.textViewTotalPrice.text = model.receiptTotalPrice.toString()
     }
 
     fun onClickButtonProduct(view: View) {
-        model.receiptItemId++
         val product = (view as Button).text.toString()
-        val newReceiptItem = ReceiptItem(model.receiptItemId, product)
-        receiptItemsAdapter.addItem(newReceiptItem)
-        binding.recyclerViewReceipt.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
+        receiptItemsAdapter.addItemWithProduct(product)
+        binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
     }
 
     fun onClickButtonDigits(view: View) {
@@ -103,33 +99,28 @@ class MainActivity : AppCompatActivity() {
         model.currentNum.value = model.currentNum.value!! + newDigits
     }
 
-    fun onClickButtonDeleteDigit(view: View) {
+    fun onClickButtonDeleteDigit(@Suppress("UNUSED_PARAMETER") view: View) {
         model.currentNum.value = model.currentNum.value!!.dropLast(1)
     }
 
-    fun onClickButtonEnter(view: View) {
+    fun onClickButtonEnter(@Suppress("UNUSED_PARAMETER") view: View) {
         if (receiptItemsAdapter.selectedPosition == RecyclerView.NO_POSITION) {
             return
         }
 
         val value = model.currentNum.value!!.toIntOrNull() ?: return
-        binding.recyclerViewReceipt.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
-        val isComplete = receiptItemsAdapter.setSelectedItemUnitPriceOrAmount(value)
-        if (isComplete) {
-            binding.textViewTotalPrice.text = model.receiptTotalPrice.toString()
-        }
+        binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
+        receiptItemsAdapter.setSelectedItemUnitPriceOrQuantity(value)
 
         model.currentNum.value = ""
     }
 
-    fun onClickButtonPrint(view: View) {
+    fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
         if (Printer.isInitialized) {
             // TODO: Print receipt
             Toast.makeText(applicationContext, "TODO", Toast.LENGTH_SHORT).show()
 
             receiptItemsAdapter.clearItems()
-            binding.textViewTotalPrice.text = model.receiptTotalPrice.toString()
-            model.receiptItemId = 0
         } else {
             Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
         }

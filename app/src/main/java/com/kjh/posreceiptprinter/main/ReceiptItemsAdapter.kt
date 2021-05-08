@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ReceiptItemBinding
 
-class ReceiptItemsAdapter(private val receipt: MutableList<ReceiptItem>) :
+class ReceiptItemsAdapter(private val receipt: Receipt) :
     RecyclerView.Adapter<ReceiptItemsAdapter.ViewHolder>() {
     var selectedPosition: Int = RecyclerView.NO_POSITION
-        set(newSelectedPosition) {
+        private set(newSelectedPosition) {
             notifyItemChanged(field)
             field = newSelectedPosition
             notifyItemChanged(field)
@@ -36,33 +36,30 @@ class ReceiptItemsAdapter(private val receipt: MutableList<ReceiptItem>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = receipt[position]
+        val item = receipt.getItem(position)
         holder.bind(item, selectedPosition == position)
     }
 
     override fun getItemCount(): Int {
-        return receipt.size
+        return receipt.itemCount
     }
 
-    fun addItem(item: ReceiptItem) {
-        receipt.add(item)
-        notifyItemInserted(receipt.size - 1)
-        selectedPosition = receipt.size - 1
+    fun addItemWithProduct(product: String) {
+        receipt.addItemWithProduct(product)
+        notifyItemInserted(receipt.itemCount - 1)
+        selectedPosition = receipt.itemCount - 1
     }
 
-    fun setSelectedItemUnitPriceOrAmount(value: Int): Boolean {
+    fun setSelectedItemUnitPriceOrQuantity(value: Int) {
         if (selectedPosition == RecyclerView.NO_POSITION) {
-            return false
+            return
         }
 
-        val selectedItem = receipt[selectedPosition]
-        selectedItem.setUnitPriceOrAmount(value)
+        receipt.setItemUnitPriceOrQuantity(selectedPosition, value)
         notifyItemChanged(selectedPosition)
-        if (selectedItem.isComplete) {
+        if (receipt.getItem(selectedPosition).price != null) { // item completed
             selectedPosition = RecyclerView.NO_POSITION
         }
-
-        return selectedItem.isComplete
     }
 
     fun removeSelectedItem() {
@@ -70,17 +67,17 @@ class ReceiptItemsAdapter(private val receipt: MutableList<ReceiptItem>) :
             return
         }
 
-        receipt.removeAt(selectedPosition)
+        receipt.removeItemAt(selectedPosition)
         notifyItemRemoved(selectedPosition)
         selectedPosition = when {
-            receipt.isEmpty() -> RecyclerView.NO_POSITION
-            selectedPosition == receipt.size -> selectedPosition - 1
+            receipt.itemCount == 0 -> RecyclerView.NO_POSITION
+            selectedPosition == receipt.itemCount -> selectedPosition - 1
             else -> selectedPosition
         }
     }
 
     fun clearItems() {
-        receipt.clear()
+        receipt.clearItems()
         notifyDataSetChanged()
     }
 }

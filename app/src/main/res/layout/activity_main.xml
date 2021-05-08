@@ -107,7 +107,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:text="0"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewTotalPriceHeader"
             app:layout_constraintEnd_toEndOf="parent"
