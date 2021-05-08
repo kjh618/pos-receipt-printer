@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="actionBarSize">55dp</item>
     </style>
 
     <style name="ThemeOverlay.POSReceiptPrinter.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
