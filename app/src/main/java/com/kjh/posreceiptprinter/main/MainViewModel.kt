@@ -1,4 +1,4 @@
-package com.kjh.posreceiptprinter
+package com.kjh.posreceiptprinter.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.kjh.posreceiptprinter
+package com.kjh.posreceiptprinter.main
 
 data class ReceiptItem(
     val id: Long,

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DebugActivity">
+    tools:context=".PrinterInfoActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarDebug"
+        android:id="@+id/toolbarPrinterInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -27,7 +27,7 @@
         android:text="@string/text_view_printer_info_title"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarDebug" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPrinterInfo" />
 
     <TextView
         android:id="@+id/textViewPrinterInfo"

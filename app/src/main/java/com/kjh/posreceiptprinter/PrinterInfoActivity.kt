@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.kjh.posreceiptprinter.databinding.ActivityDebugBinding
+import com.kjh.posreceiptprinter.databinding.ActivityPrinterInfoBinding
 import java.nio.charset.Charset
 
-class DebugActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityDebugBinding
+class PrinterInfoActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPrinterInfoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDebugBinding.inflate(layoutInflater)
+        binding = ActivityPrinterInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbarDebug)
+        setSupportActionBar(binding.toolbarPrinterInfo)
 
         binding.textViewPrinterInfo.text = Printer.toString()
     }

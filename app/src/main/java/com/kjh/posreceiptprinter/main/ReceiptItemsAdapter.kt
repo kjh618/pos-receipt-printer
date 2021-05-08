@@ -1,4 +1,4 @@
-package com.kjh.posreceiptprinter
+package com.kjh.posreceiptprinter.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

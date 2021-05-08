@@ -1,4 +1,4 @@
-package com.kjh.posreceiptprinter
+package com.kjh.posreceiptprinter.main
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kjh.posreceiptprinter.PrinterInfoActivity
+import com.kjh.posreceiptprinter.Printer
+import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -62,8 +65,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menuItemDebug -> {
-                val intent = Intent(this, DebugActivity::class.java)
+            R.id.menuItemPrinterInfo -> {
+                val intent = Intent(this, PrinterInfoActivity::class.java)
                 startActivity(intent)
                 true
             }

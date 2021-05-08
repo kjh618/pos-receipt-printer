@@ -4,7 +4,7 @@
     <string name="text_view_printer_info_title">프린터 정보</string>
     <string name="text_view_print_content_title">프린트 내용</string>
     <string name="menu_item_settings">설정</string>
-    <string name="menu_item_debug">디버그  화면</string>
+    <string name="menu_item_printer_info">프린터 정보</string>
     <string name="button_enter">입력 ↵</string>
     <string name="toast_no_printer">프린터 연결되지 않음</string>
     <string name="button_delete_digit">←</string>

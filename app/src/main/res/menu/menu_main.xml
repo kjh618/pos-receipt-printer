@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menuItemDebug"
-        android:title="@string/menu_item_debug"
+        android:id="@+id/menuItemPrinterInfo"
+        android:title="@string/menu_item_printer_info"
         app:showAsAction="never" />
     <item
         android:id="@+id/menuItemSettings"
