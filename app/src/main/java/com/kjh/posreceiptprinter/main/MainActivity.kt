@@ -2,7 +2,8 @@ package com.kjh.posreceiptprinter.main
 
 import android.content.Context
 import android.content.Intent
-import android.hardware.usb.*
+import android.hardware.usb.UsbDevice
+import android.hardware.usb.UsbManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,7 +13,10 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.Printer
 import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
@@ -97,11 +101,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonRemoveReceiptItem(@Suppress("UNUSED_PARAMETER") view: View) {
+        if (receiptItemsAdapter.selectedPosition == RecyclerView.NO_POSITION) {
+            return
+        }
+
         binding.recyclerViewReceiptItems.itemAnimator?.endAnimations()
         receiptItemsAdapter.removeSelectedItem()
-        if (receiptItemsAdapter.selectedPosition != RecyclerView.NO_POSITION) {
-            binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
-        }
+        binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
     }
 
     fun onClickButtonProduct(view: View) {

@@ -8,6 +8,7 @@ import java.text.NumberFormat
 
 class ReceiptItemsAdapter(private val receipt: Receipt) :
     RecyclerView.Adapter<ReceiptItemsAdapter.ViewHolder>() {
+
     var selectedPosition: Int = RecyclerView.NO_POSITION
         private set(newSelectedPosition) {
             notifyItemChanged(field)
@@ -17,6 +18,7 @@ class ReceiptItemsAdapter(private val receipt: Receipt) :
 
     inner class ViewHolder(private val binding: ReceiptItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         init {
             binding.root.setOnClickListener { selectedPosition = layoutPosition }
         }
@@ -75,9 +77,12 @@ class ReceiptItemsAdapter(private val receipt: Receipt) :
         receipt.removeItemAt(selectedPosition)
         notifyItemRemoved(selectedPosition)
         selectedPosition = when {
-            receipt.itemCount == 0 -> RecyclerView.NO_POSITION
-            selectedPosition == receipt.itemCount -> selectedPosition - 1
-            else -> selectedPosition
+            receipt.itemCount == 0 -> // no items left
+                RecyclerView.NO_POSITION
+            selectedPosition == receipt.itemCount -> // last item removed
+                selectedPosition - 1
+            else -> // middle item removed
+                selectedPosition
         }
     }
 

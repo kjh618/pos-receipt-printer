@@ -10,6 +10,7 @@ class ProductsAdapter(private val products: Array<String>) :
 
     class ViewHolder(private val binding: ButtonProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(product: String) {
             binding.buttonProduct.text = product
         }
