@@ -12,9 +12,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.kjh.posreceiptprinter.Printer
 import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
@@ -47,12 +45,14 @@ class MainActivity : AppCompatActivity() {
         model.receipt.observeTotalPrice(this, { binding.textViewTotalPrice.text = it.toString() })
         receiptItemsAdapter = ReceiptItemsAdapter(model.receipt)
         binding.recyclerViewReceiptItems.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = LinearLayoutManager(context)
             adapter = receiptItemsAdapter
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            itemAnimator?.changeDuration = 0
         }
 
         binding.recyclerViewProducts.apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 3)
+            layoutManager = GridLayoutManager(context, 3)
             adapter = ProductsAdapter(model.products)
         }
 
@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonRemoveReceiptItem(@Suppress("UNUSED_PARAMETER") view: View) {
+        binding.recyclerViewReceiptItems.itemAnimator?.endAnimations()
         receiptItemsAdapter.removeSelectedItem()
         if (receiptItemsAdapter.selectedPosition != RecyclerView.NO_POSITION) {
             binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
@@ -89,6 +90,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonProduct(view: View) {
+        binding.recyclerViewReceiptItems.itemAnimator?.endAnimations()
         val product = (view as Button).text.toString()
         receiptItemsAdapter.addItemWithProduct(product)
         binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)

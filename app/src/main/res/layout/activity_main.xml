@@ -156,6 +156,8 @@
             android:id="@+id/textViewCurrentNum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="start"
+            android:singleLine="true"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             app:layout_constraintBaseline_toBaselineOf="@+id/buttonDeleteDigit"
             app:layout_constraintEnd_toStartOf="@+id/buttonDeleteDigit"

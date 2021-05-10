@@ -22,29 +22,38 @@
         android:id="@+id/textViewUnitPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:gravity="end"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewProduct"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewQuantity"
-        app:layout_constraintStart_toEndOf="@+id/textViewProduct" />
+        app:layout_constraintStart_toEndOf="@+id/textViewProduct"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewQuantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:gravity="end"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewProduct"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewPrice"
-        app:layout_constraintStart_toEndOf="@+id/textViewUnitPrice" />
+        app:layout_constraintStart_toEndOf="@+id/textViewUnitPrice"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:gravity="end"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewProduct"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewQuantity" />
+        app:layout_constraintStart_toEndOf="@+id/textViewQuantity"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
