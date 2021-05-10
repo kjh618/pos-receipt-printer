@@ -46,7 +46,22 @@ class MainActivity : AppCompatActivity() {
             binding.textViewTotalPrice.text =
                 getString(R.string.money_amount, NumberFormat.getInstance().format(it))
         })
-        receiptItemsAdapter = ReceiptItemsAdapter(model.receipt)
+
+        receiptItemsAdapter = ReceiptItemsAdapter(model.receipt) {
+            binding.textViewCurrentNumHeader.text = when {
+                it == null -> ""
+                it.unitPrice == null -> getString(
+                    R.string.text_view_current_num_header,
+                    getString(R.string.unit_price_header),
+                )
+                it.quantity == null -> getString(
+                    R.string.text_view_current_num_header,
+                    getString(R.string.quantity_header),
+                )
+                else -> ""
+            }
+        }
+
         binding.recyclerViewReceiptItems.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = receiptItemsAdapter
@@ -107,7 +122,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerViewReceiptItems.itemAnimator?.endAnimations()
         receiptItemsAdapter.removeSelectedItem()
-        binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
+        if (receiptItemsAdapter.selectedPosition != RecyclerView.NO_POSITION) {
+            binding.recyclerViewReceiptItems.smoothScrollToPosition(receiptItemsAdapter.selectedPosition)
+        }
     }
 
     fun onClickButtonProduct(view: View) {

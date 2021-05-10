@@ -15,8 +15,8 @@ class Receipt {
         totalPrice.observe(owner, observer)
     }
 
-    fun getItem(index: Int): ReceiptItem {
-        return items[index]
+    fun getItem(index: Int): ReceiptItem? {
+        return items.getOrNull(index)
     }
 
     fun addItemWithProduct(product: String) {

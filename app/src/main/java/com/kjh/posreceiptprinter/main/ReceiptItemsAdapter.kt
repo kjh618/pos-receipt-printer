@@ -6,14 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ReceiptItemBinding
 import java.text.NumberFormat
 
-class ReceiptItemsAdapter(private val receipt: Receipt) :
-    RecyclerView.Adapter<ReceiptItemsAdapter.ViewHolder>() {
+class ReceiptItemsAdapter(
+    private val receipt: Receipt,
+    private val onSelect: (ReceiptItem?) -> Unit,
+) : RecyclerView.Adapter<ReceiptItemsAdapter.ViewHolder>() {
 
     var selectedPosition: Int = RecyclerView.NO_POSITION
         private set(newSelectedPosition) {
             notifyItemChanged(field)
             field = newSelectedPosition
             notifyItemChanged(field)
+
+            onSelect(receipt.getItem(field))
         }
 
     inner class ViewHolder(private val binding: ReceiptItemBinding) :
@@ -43,7 +47,7 @@ class ReceiptItemsAdapter(private val receipt: Receipt) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = receipt.getItem(position)
+        val item = receipt.getItem(position)!!
         holder.bind(item, selectedPosition == position)
     }
 
@@ -54,6 +58,7 @@ class ReceiptItemsAdapter(private val receipt: Receipt) :
     fun addItemWithProduct(product: String) {
         receipt.addItemWithProduct(product)
         notifyItemInserted(receipt.itemCount - 1)
+
         selectedPosition = receipt.itemCount - 1
     }
 
@@ -64,8 +69,15 @@ class ReceiptItemsAdapter(private val receipt: Receipt) :
 
         receipt.setItemUnitPriceOrQuantity(selectedPosition, value)
         notifyItemChanged(selectedPosition)
-        if (receipt.getItem(selectedPosition).price != null) { // item completed
-            selectedPosition = RecyclerView.NO_POSITION
+
+        selectedPosition = if (receipt.getItem(selectedPosition)!!.price != null) {
+            if (selectedPosition == receipt.itemCount - 1) { // last item completed
+                RecyclerView.NO_POSITION
+            } else { // middle item completed
+                selectedPosition + 1
+            }
+        } else { // item not yet complete
+            selectedPosition
         }
     }
 
@@ -76,6 +88,7 @@ class ReceiptItemsAdapter(private val receipt: Receipt) :
 
         receipt.removeItemAt(selectedPosition)
         notifyItemRemoved(selectedPosition)
+
         selectedPosition = when {
             receipt.itemCount == 0 -> // no items left
                 RecyclerView.NO_POSITION

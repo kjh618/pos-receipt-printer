@@ -61,7 +61,7 @@
                 android:layout_marginBottom="4dp"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:text="@string/text_view_unit_price_header"
+                android:text="@string/unit_price_header"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
                 android:textStyle="bold" />
 
@@ -73,7 +73,7 @@
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/text_view_quantity_header"
+                android:text="@string/quantity_header"
                 android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
                 android:textStyle="bold" />
 
@@ -184,6 +184,17 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbarMain">
 
         <TextView
+            android:id="@+id/textViewCurrentNumHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/buttonDeleteDigit"
+            app:layout_constraintEnd_toStartOf="@+id/textViewCurrentNum"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
             android:id="@+id/textViewCurrentNum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -193,8 +204,8 @@
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             app:layout_constraintBaseline_toBaselineOf="@+id/buttonDeleteDigit"
             app:layout_constraintEnd_toStartOf="@+id/buttonDeleteDigit"
-            app:layout_constraintHorizontal_weight="5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_weight="4"
+            app:layout_constraintStart_toEndOf="@+id/textViewCurrentNumHeader" />
 
         <Button
             android:id="@+id/buttonDeleteDigit"
