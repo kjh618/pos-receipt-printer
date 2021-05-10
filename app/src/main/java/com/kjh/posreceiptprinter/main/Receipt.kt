@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer
 
 class Receipt {
     private val items: MutableList<ReceiptItem> = mutableListOf()
-    private var newItemId: Long = 1
     private val totalPrice: MutableLiveData<Long> by lazy { MutableLiveData(0) }
 
     val itemCount: Int
@@ -21,9 +20,8 @@ class Receipt {
     }
 
     fun addItemWithProduct(product: String) {
-        val item = ReceiptItem(newItemId, product)
+        val item = ReceiptItem(product)
         items.add(item)
-        newItemId++
     }
 
     fun setItemUnitPriceOrQuantity(index: Int, value: Int) {
@@ -39,7 +37,6 @@ class Receipt {
 
     fun clearItems() {
         items.clear()
-        newItemId = 1
         totalPrice.value = 0
     }
 }
