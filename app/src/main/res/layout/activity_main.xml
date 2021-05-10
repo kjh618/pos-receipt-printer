@@ -30,71 +30,93 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMain">
 
-        <TextView
-            android:id="@+id/textViewProductHeader"
+        <LinearLayout
+            android:id="@+id/linearLayoutReceiptItemsHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/text_view_product_header"
-            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textViewUnitPriceHeader"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewUnitPriceHeader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/text_view_unit_price_header"
-            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
-            app:layout_constraintEnd_toStartOf="@+id/textViewQuantityHeader"
-            app:layout_constraintStart_toEndOf="@+id/textViewProductHeader" />
-
-        <TextView
-            android:id="@+id/textViewQuantityHeader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/text_view_quantity_header"
-            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
-            app:layout_constraintEnd_toStartOf="@+id/textViewPriceHeader"
-            app:layout_constraintStart_toEndOf="@+id/textViewUnitPriceHeader" />
-
-        <TextView
-            android:id="@+id/textViewPriceHeader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/text_view_price_header"
-            android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textViewProductHeader"
+            android:divider="?attr/dividerHorizontal"
+            android:orientation="horizontal"
+            android:showDividers="middle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewQuantityHeader" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textViewProductHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/text_view_product_header"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewUnitPriceHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/text_view_unit_price_header"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewQuantityHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/text_view_quantity_header"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewPriceHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/text_view_price_header"
+                android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/dividerReceiptItemsHeader"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutReceiptItemsHeader" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReceiptItems"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/dividerReceiptItems"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerReceiptItemsHeader" />
+
+        <View
+            android:id="@+id/dividerReceiptItems"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toTopOf="@+id/textViewTotalPriceHeader"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewProductHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewReceiptItems" />
 
         <TextView
             android:id="@+id/textViewTotalPriceHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/text_view_total_price_header"
             android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
             android:textStyle="bold"
