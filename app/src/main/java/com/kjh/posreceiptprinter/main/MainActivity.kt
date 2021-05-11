@@ -29,19 +29,27 @@ class MainActivity : AppCompatActivity() {
     private lateinit var model: MainViewModel
     private lateinit var receiptItemsAdapter: ReceiptItemsAdapter
 
-    private fun initializePrinter() {
-        val manager = getSystemService(Context.USB_SERVICE) as UsbManager
-        val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
-        if (device != null) {
-            Printer.initialize(manager, device)
-        } else {
-            Log.w(this::class.simpleName, "No USB device detected")
-            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbarMain)
+        model = ViewModelProvider(this).get(MainViewModel::class.java)
 
-    private fun setupViews() {
+        Log.i(this::class.simpleName, "Locale: ${Locale.getDefault()}")
+
+        if (!Printer.isInitialized) {
+            val manager = getSystemService(Context.USB_SERVICE) as UsbManager
+            val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
+            if (device != null) {
+                Printer.initialize(manager, device)
+            } else {
+                Log.w(this::class.simpleName, "No USB device detected")
+                Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
         model.receipt.observeTotalPrice(this, {
             binding.textViewTotalPrice.text =
                 getString(R.string.money_amount, NumberFormat.getInstance().format(it))
@@ -75,22 +83,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolbarMain)
-        model = ViewModelProvider(this).get(MainViewModel::class.java)
-
-        Log.i(this::class.simpleName, "Locale: ${Locale.getDefault()}")
-
-        if (!Printer.isInitialized) {
-            initializePrinter()
-        }
-
-        setupViews()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

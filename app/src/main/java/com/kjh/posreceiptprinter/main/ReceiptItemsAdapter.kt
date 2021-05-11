@@ -8,7 +8,7 @@ import java.text.NumberFormat
 
 class ReceiptItemsAdapter(
     private val receipt: Receipt,
-    private val onSelect: (ReceiptItem?) -> Unit,
+    private val onSelectItem: (ReceiptItem?) -> Unit,
 ) : RecyclerView.Adapter<ReceiptItemsAdapter.ViewHolder>() {
 
     var selectedPosition: Int = RecyclerView.NO_POSITION
@@ -17,7 +17,8 @@ class ReceiptItemsAdapter(
             field = newSelectedPosition
             notifyItemChanged(field)
 
-            onSelect(receipt.getItem(field))
+            val item = if (field == RecyclerView.NO_POSITION) null else receipt.getItem(field)
+            onSelectItem(item)
         }
 
     inner class ViewHolder(private val binding: ReceiptItemBinding) :
@@ -47,7 +48,7 @@ class ReceiptItemsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = receipt.getItem(position)!!
+        val item = receipt.getItem(position)
         holder.bind(item, selectedPosition == position)
     }
 
@@ -70,7 +71,7 @@ class ReceiptItemsAdapter(
         receipt.setItemUnitPriceOrQuantity(selectedPosition, value)
         notifyItemChanged(selectedPosition)
 
-        selectedPosition = if (receipt.getItem(selectedPosition)!!.price != null) {
+        selectedPosition = if (receipt.getItem(selectedPosition).price != null) {
             if (selectedPosition == receipt.itemCount - 1) { // last item completed
                 RecyclerView.NO_POSITION
             } else { // middle item completed
