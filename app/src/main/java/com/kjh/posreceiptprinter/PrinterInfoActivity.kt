@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kjh.posreceiptprinter.databinding.ActivityPrinterInfoBinding
+import com.kjh.posreceiptprinter.printing.PrintManager
 import java.nio.charset.Charset
 
 class PrinterInfoActivity : AppCompatActivity() {
@@ -16,7 +17,17 @@ class PrinterInfoActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarPrinterInfo)
 
-        binding.textViewPrinterInfo.text = Printer.toString()
+        binding.textViewPrinterInfo.text = PrintManager.toString()
+    }
+
+    fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
+        if (PrintManager.isPrinterInitialized) {
+            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT).show()
+            val bytes = parseHexEscapes(binding.editTextPrintContent.text.toString())
+            PrintManager.printBytes(bytes)
+        } else {
+            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun parseHexEscapes(stringWithHex: String): ByteArray {
@@ -26,14 +37,5 @@ class PrinterInfoActivity : AppCompatActivity() {
             match.value.substring(2).toInt(16).toChar().toString()
         }
         return newString.toByteArray(Charset.forName("EUC-KR"))
-    }
-
-    fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
-        if (Printer.isInitialized) {
-            val bytes = parseHexEscapes(binding.editTextPrintContent.text.toString())
-            Printer.print(bytes)
-        } else {
-            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
-        }
     }
 }

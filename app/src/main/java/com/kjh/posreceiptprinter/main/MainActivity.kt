@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kjh.posreceiptprinter.Printer
 import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
+import com.kjh.posreceiptprinter.printing.PrintManager
 import java.text.NumberFormat
 import java.util.*
 
@@ -38,11 +38,11 @@ class MainActivity : AppCompatActivity() {
 
         Log.i(this::class.simpleName, "Locale: ${Locale.getDefault()}")
 
-        if (!Printer.isInitialized) {
+        if (!PrintManager.isPrinterInitialized) {
             val manager = getSystemService(Context.USB_SERVICE) as UsbManager
             val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
             if (device != null) {
-                Printer.initialize(manager, device)
+                PrintManager.initializeUsbPrinter(manager, device)
             } else {
                 Log.w(this::class.simpleName, "No USB device detected")
                 Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
@@ -148,10 +148,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
-        if (Printer.isInitialized) {
-            // TODO: Print receipt
-            Toast.makeText(applicationContext, "TODO", Toast.LENGTH_SHORT).show()
-
+        if (PrintManager.isPrinterInitialized) {
+            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT).show()
+            PrintManager.printContent()
             receiptItemsAdapter.clearItems()
         } else {
             Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
