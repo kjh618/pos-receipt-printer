@@ -14,7 +14,7 @@
     <string name="quantity_header">수량</string>
     <string name="text_view_price_header">금액</string>
     <string name="text_view_total_price_header">"합계: "</string>
-    <string name="button_remove_receipt_item">X 삭제</string>
+    <string name="button_remove_receipt_item">✕ 삭제</string>
     <string name="money_amount">%s원</string>
     <string name="text_view_current_num_header">"%s: "</string>
 </resources>
