@@ -5,8 +5,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kjh.posreceiptprinter.databinding.ActivityPrinterInfoBinding
+import com.kjh.posreceiptprinter.printing.CHARSET
 import com.kjh.posreceiptprinter.printing.PrintManager
-import java.nio.charset.Charset
 
 class PrinterInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPrinterInfoBinding
@@ -17,14 +17,14 @@ class PrinterInfoActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarPrinterInfo)
 
-        binding.textViewPrinterInfo.text = PrintManager.toString()
+        binding.textViewPrinterInfo.text = PrintManager.printer.toString()
     }
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
         if (PrintManager.isPrinterInitialized) {
             Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT).show()
             val bytes = parseHexEscapes(binding.editTextPrintContent.text.toString())
-            PrintManager.printBytes(bytes)
+            PrintManager.printer.print(bytes)
         } else {
             Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
         }
@@ -36,6 +36,6 @@ class PrinterInfoActivity : AppCompatActivity() {
         val newString = hexEscape.replace(stringWithHex) { match ->
             match.value.substring(2).toInt(16).toChar().toString()
         }
-        return newString.toByteArray(Charset.forName("EUC-KR"))
+        return newString.toByteArray(CHARSET)
     }
 }

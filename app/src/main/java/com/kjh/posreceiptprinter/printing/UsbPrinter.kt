@@ -1,6 +1,7 @@
 package com.kjh.posreceiptprinter.printing
 
 import android.hardware.usb.*
+import android.util.Log
 
 class UsbPrinter(
     manager: UsbManager,
@@ -12,13 +13,15 @@ class UsbPrinter(
     private val connection: UsbDeviceConnection = manager.openDevice(this.device)
     init {
         connection.claimInterface(interf, true)
+        Log.i(this::class.simpleName, "USB printer initialized")
     }
 
     override fun toString(): String {
-        return "UsbPrinter(usbDevice=$device, ...)"
+        return "UsbPrinter(device=$device, ...)"
     }
 
     fun print(bytes: ByteArray) {
+        Log.d(this::class.simpleName, "Printing ${bytes.size} bytes...")
         connection.bulkTransfer(endpoint, bytes, bytes.size, 0)
     }
 }
