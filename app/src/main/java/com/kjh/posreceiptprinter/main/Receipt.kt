@@ -45,25 +45,6 @@ class Receipt {
     }
 
     fun toPrintContent(): PrintContent {
-        return PrintContent().apply {
-            addCommand(PrinterCommand.Initialize)
-
-            addText("Test 테스트\n")
-
-            addCommand(PrinterCommand.SelectPrintModes(PrintModes(
-                false, true, true, true, true
-            )))
-            addText("Test 테스트\n")
-
-            addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
-            addCommand(PrinterCommand.SelectJustification(Justification.Left))
-            addText("Test 테스트\n")
-            addCommand(PrinterCommand.SelectJustification(Justification.Center))
-            addText("Test 테스트\n")
-            addCommand(PrinterCommand.SelectJustification(Justification.Right))
-            addText("Test 테스트\n")
-
-            addCommand(PrinterCommand.PartialCut(100))
-        }
+        TODO()
     }
 }

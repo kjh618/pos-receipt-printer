@@ -17,7 +17,11 @@ class PrinterInfoActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarPrinterInfo)
 
-        binding.textViewPrinterInfo.text = PrintManager.printer.toString()
+        binding.textViewPrinterInfo.text = if (PrintManager.isPrinterInitialized) {
+            PrintManager.printer.toString()
+        } else {
+            "no printer"
+        }
     }
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {

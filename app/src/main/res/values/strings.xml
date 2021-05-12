@@ -18,4 +18,5 @@
     <string name="money_amount">%s원</string>
     <string name="text_view_current_num_header">"%s: "</string>
     <string name="toast_printing">프린트 중...</string>
+    <string name="menu_item_printer_test">프린터 테스트</string>
 </resources>

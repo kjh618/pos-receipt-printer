@@ -21,6 +21,7 @@ import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 import com.kjh.posreceiptprinter.printing.PrintManager
+import com.kjh.posreceiptprinter.printing.TEST_CONTENT
 import java.text.NumberFormat
 import java.util.*
 
@@ -95,6 +96,20 @@ class MainActivity : AppCompatActivity() {
             R.id.menuItemPrinterInfo -> {
                 val intent = Intent(this, PrinterInfoActivity::class.java)
                 startActivity(intent)
+                true
+            }
+            R.id.menuItemPrinterTest -> {
+                if (PrintManager.isPrinterInitialized) {
+                    Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT)
+                        .show()
+                    PrintManager.printer.print(TEST_CONTENT.toByteArray())
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        R.string.toast_no_printer,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 true
             }
             R.id.menuItemSettings -> {
