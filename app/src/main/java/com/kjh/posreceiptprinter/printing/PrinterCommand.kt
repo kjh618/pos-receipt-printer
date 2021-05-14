@@ -1,5 +1,7 @@
 package com.kjh.posreceiptprinter.printing
 
+const val CPL_FONT_A: Int = 42 // Characters per line
+
 private const val ESC: Char = '\u001B'
 private const val GS: Char = '\u001D'
 

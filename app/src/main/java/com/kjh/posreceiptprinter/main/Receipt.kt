@@ -3,12 +3,9 @@ package com.kjh.posreceiptprinter.main
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.kjh.posreceiptprinter.printing.Justification
 import com.kjh.posreceiptprinter.printing.PrintContent
-import com.kjh.posreceiptprinter.printing.PrintModes
-import com.kjh.posreceiptprinter.printing.PrinterCommand
 
-class Receipt {
+class Receipt(val title: String) {
     private val items: MutableList<ReceiptItem> = mutableListOf()
     private val totalPrice: MutableLiveData<Long> by lazy { MutableLiveData(0) }
 
