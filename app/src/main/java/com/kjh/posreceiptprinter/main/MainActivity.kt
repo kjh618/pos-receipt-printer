@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
+import com.kjh.posreceiptprinter.settings.SettingsActivity
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 import com.kjh.posreceiptprinter.printing.PrintManager
 import com.kjh.posreceiptprinter.printing.TEST_CONTENT
@@ -94,8 +95,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menuItemPrinterInfo -> {
-                val intent = Intent(this, PrinterInfoActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, PrinterInfoActivity::class.java))
                 true
             }
             R.id.menuItemPrinterTest -> {
@@ -104,16 +104,13 @@ class MainActivity : AppCompatActivity() {
                         .show()
                     PrintManager.printer.print(TEST_CONTENT.toByteArray())
                 } else {
-                    Toast.makeText(
-                        applicationContext,
-                        R.string.toast_no_printer,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
+                        .show()
                 }
                 true
             }
             R.id.menuItemSettings -> {
-                // TODO: Settings
+                startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
             else -> {
