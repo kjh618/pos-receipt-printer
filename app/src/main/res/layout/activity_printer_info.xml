@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/text_view_printer_info_title"
+        android:text="@string/printer_info"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarPrinterInfo" />
@@ -41,18 +41,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewPrinterInfoTitle" />
 
     <TextView
-        android:id="@+id/textViewPrintContentTitle"
+        android:id="@+id/textViewPrintRawTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/text_view_print_content_title"
+        android:text="@string/text_view_print_raw_title"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPrinterInfo" />
 
     <EditText
-        android:id="@+id/editTextPrintContent"
+        android:id="@+id/editTextPrintRaw"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -60,16 +60,16 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="@string/edit_text_print_content_hint"
+        android:hint="@string/edit_text_print_raw_hint"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Body"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPrintContentTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPrintRawTitle" />
 
     <Button
-        android:id="@+id/buttonPrintContent"
+        android:id="@+id/buttonPrintRaw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -77,6 +77,6 @@
         android:text="@string/button_print"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPrintContent" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPrintRaw" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

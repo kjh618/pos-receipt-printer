@@ -27,7 +27,7 @@ class PrinterInfoActivity : AppCompatActivity() {
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
         if (PrintManager.isPrinterInitialized) {
             Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT).show()
-            val bytes = parseHexEscapes(binding.editTextPrintContent.text.toString())
+            val bytes = parseHexEscapes(binding.editTextPrintRaw.text.toString())
             PrintManager.printer.print(bytes)
         } else {
             Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
