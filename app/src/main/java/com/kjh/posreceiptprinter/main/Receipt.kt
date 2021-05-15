@@ -78,8 +78,8 @@ class Receipt {
 
             addCommand(PrinterCommand.SelectPrintModes(PrintModes(doubleHeight = true)))
             addTableRow(listOf(
-                TableCell(res.getString(R.string.total_price_header), Justification.Left, 1),
-                TableCell(totalPrice.value!!.format("0"), Justification.Right, 2),
+                TableCell(res.getString(R.string.total_price_header), Justification.Left, 2),
+                TableCell(totalPrice.value!!.format("0"), Justification.Right, 5),
             ))
 
             addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
