@@ -9,4 +9,9 @@
         android:defaultValue="상품 1"
         android:key="products"
         android:title="상품" />
+    <EditTextPreference
+        android:defaultValue="영수증"
+        android:key="footer"
+        android:title="영수증 꼬리말"
+        app:useSimpleSummaryProvider="true" />
 </PreferenceScreen>

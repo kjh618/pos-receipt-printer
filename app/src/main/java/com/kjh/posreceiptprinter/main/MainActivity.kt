@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 "title" -> model.receipt.title.value = sharedPreferences.getString(key, null)!!
                 "products" -> model.products.value =
                     parseProductsPreference(sharedPreferences.getString(key, null)!!)
+                "footer" -> model.receipt.footer = sharedPreferences.getString(key, null)!!
             }
         }
 
@@ -60,8 +61,9 @@ class MainActivity : AppCompatActivity() {
         PreferenceManager.getDefaultSharedPreferences(this).apply {
             registerOnSharedPreferenceChangeListener(listener)
 
-            model.receipt.title.value = getString("title", null)!!
-            model.products.value = parseProductsPreference(getString("products", null)!!)
+            model.receipt.title.value = getString("title", "영수증")!!
+            model.products.value = parseProductsPreference(getString("products", "상품 1")!!)
+            model.receipt.footer = getString("footer", "영수증")!!
         }
     }
 

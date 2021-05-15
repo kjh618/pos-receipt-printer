@@ -7,11 +7,14 @@ import androidx.lifecycle.Observer
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.printing.*
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Receipt {
     val title: MutableLiveData<String> by lazy { MutableLiveData("영수증") }
     private val items: MutableList<ReceiptItem> = mutableListOf()
     private val totalPrice: MutableLiveData<Long> by lazy { MutableLiveData(0) }
+    var footer: String = ""
 
     lateinit var res: Resources
 
@@ -61,6 +64,12 @@ class Receipt {
             addText(title.value!! + "\n\n")
 
             addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
+            addCommand(PrinterCommand.SelectJustification(Justification.Right))
+            val dateTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .format(Date())
+            addText(dateTime + "\n")
+
+            addCommand(PrinterCommand.SelectJustification(Justification.Left))
             addText("=".repeat(CPL_FONT_A) + "\n")
 
             addTableRow(listOf(
@@ -83,7 +92,9 @@ class Receipt {
             ))
 
             addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
-            addText("=".repeat(CPL_FONT_A) + "\n")
+            addText("=".repeat(CPL_FONT_A) + "\n\n")
+
+            addText(footer + "\n")
 
             addCommand(PrinterCommand.PartialCut(100))
         }
