@@ -8,11 +8,11 @@
     <string name="toast_no_printer">프린터 연결되지 않음</string>
     <string name="toast_printing">프린트 중...</string>
 
-    <string name="text_view_product_header">상품</string>
+    <string name="product_header">상품</string>
     <string name="unit_price_header">단가</string>
     <string name="quantity_header">수량</string>
-    <string name="text_view_price_header">금액</string>
-    <string name="text_view_total_price_header">"합계: "</string>
+    <string name="price_header">금액</string>
+    <string name="total_price_header">"합계: "</string>
     <string name="money_amount">%s원</string>
     <string name="button_remove_receipt_item">✕ 삭제</string>
 
