@@ -26,7 +26,6 @@ import com.kjh.posreceiptprinter.printing.PrintManager
 import com.kjh.posreceiptprinter.printing.TEST_CONTENT
 import com.kjh.posreceiptprinter.settings.SettingsActivity
 import com.kjh.posreceiptprinter.settings.parseProductsPreference
-import java.text.NumberFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -81,12 +80,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupReceipt() {
+        model.receipt.res = resources
         model.receipt.observe(
             this,
             { supportActionBar!!.title = "${getString(R.string.app_name)} - $it" },
             {
                 binding.textViewTotalPrice.text =
-                    getString(R.string.money_amount, NumberFormat.getInstance().format(it))
+                    getString(R.string.money_amount, it.format("0"))
             },
         )
 

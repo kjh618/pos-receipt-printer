@@ -3,7 +3,7 @@ package com.kjh.posreceiptprinter.printing
 private const val ESC: Char = '\u001B'
 private const val GS: Char = '\u001D'
 
-class PrintModes(
+data class PrintModes(
     private val font2: Boolean = false,
     private val emphasized: Boolean = false,
     private val doubleHeight: Boolean = false,

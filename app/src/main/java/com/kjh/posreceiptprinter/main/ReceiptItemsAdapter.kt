@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ReceiptItemBinding
-import java.text.NumberFormat
 
 class ReceiptItemsAdapter(
     private val receipt: Receipt,
@@ -28,15 +27,11 @@ class ReceiptItemsAdapter(
             binding.root.setOnClickListener { selectedPosition = layoutPosition }
         }
 
-        private fun format(n: Number?): String {
-            return if (n == null) "" else NumberFormat.getInstance().format(n)
-        }
-
         fun bind(item: ReceiptItem, isSelected: Boolean) {
             binding.textViewProduct.text = item.product
-            binding.textViewUnitPrice.text = format(item.unitPrice)
-            binding.textViewQuantity.text = format(item.quantity)
-            binding.textViewPrice.text = format(item.price)
+            binding.textViewUnitPrice.text = item.unitPrice.format("")
+            binding.textViewQuantity.text = item.quantity.format("")
+            binding.textViewPrice.text = item.price.format("")
 
             binding.root.isActivated = isSelected
         }

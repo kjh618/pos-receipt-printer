@@ -1,5 +1,9 @@
 package com.kjh.posreceiptprinter.main
 
+import com.kjh.posreceiptprinter.printing.Justification
+import com.kjh.posreceiptprinter.printing.TableCell
+import java.text.NumberFormat
+
 class ReceiptItem(
     val product: String,
     var unitPrice: Int? = null,
@@ -18,5 +22,14 @@ class ReceiptItem(
         } else if (quantity == null) {
             quantity = value
         }
+    }
+
+    fun toTableRow(): List<TableCell> {
+        return listOf(
+            TableCell(product, Justification.Left, 2),
+            TableCell(unitPrice.format("0"), Justification.Right, 2),
+            TableCell(quantity.format("0"), Justification.Right, 1),
+            TableCell(price.format("0"), Justification.Right, 2),
+        )
     }
 }
