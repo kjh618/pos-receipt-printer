@@ -1,12 +1,12 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Enable message notifications" />
-
-    <Preference
-        app:key="feedback"
-        app:summary="Report technical issues or suggest new features"
-        app:title="Send feedback" />
-
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:defaultValue="영수증"
+        android:key="title"
+        android:title="영수증 제목"
+        app:useSimpleSummaryProvider="true" />
+    <EditTextPreference
+        android:defaultValue="상품 1"
+        android:key="products"
+        android:title="상품" />
 </PreferenceScreen>

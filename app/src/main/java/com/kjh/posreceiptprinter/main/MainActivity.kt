@@ -2,6 +2,7 @@ package com.kjh.posreceiptprinter.main
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Bundle
@@ -13,16 +14,18 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
-import com.kjh.posreceiptprinter.settings.SettingsActivity
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 import com.kjh.posreceiptprinter.printing.PrintManager
 import com.kjh.posreceiptprinter.printing.TEST_CONTENT
+import com.kjh.posreceiptprinter.settings.SettingsActivity
+import com.kjh.posreceiptprinter.settings.parseProductsPreference
 import java.text.NumberFormat
 import java.util.*
 
@@ -30,6 +33,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var model: MainViewModel
     private lateinit var receiptItemsAdapter: ReceiptItemsAdapter
+
+    private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+            when (key) {
+                "title" -> model.receipt.title.value = sharedPreferences.getString(key, null)!!
+                "products" -> model.products.value =
+                    parseProductsPreference(sharedPreferences.getString(key, null)!!)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +52,21 @@ class MainActivity : AppCompatActivity() {
 
         Log.i(this::class.simpleName, "Locale: ${Locale.getDefault()}")
 
+        setupPrinter()
+
+        setupProducts()
+        setupReceipt()
+        model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
+
+        PreferenceManager.getDefaultSharedPreferences(this).apply {
+            registerOnSharedPreferenceChangeListener(listener)
+
+            model.receipt.title.value = getString("title", null)!!
+            model.products.value = parseProductsPreference(getString("products", null)!!)
+        }
+    }
+
+    private fun setupPrinter() {
         if (!PrintManager.isPrinterInitialized) {
             val manager = getSystemService(Context.USB_SERVICE) as UsbManager
             val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
@@ -51,11 +78,17 @@ class MainActivity : AppCompatActivity() {
                     .show()
             }
         }
+    }
 
-        model.receipt.observeTotalPrice(this, {
-            binding.textViewTotalPrice.text =
-                getString(R.string.money_amount, NumberFormat.getInstance().format(it))
-        })
+    private fun setupReceipt() {
+        model.receipt.observe(
+            this,
+            { supportActionBar!!.title = "${getString(R.string.app_name)} - $it" },
+            {
+                binding.textViewTotalPrice.text =
+                    getString(R.string.money_amount, NumberFormat.getInstance().format(it))
+            },
+        )
 
         receiptItemsAdapter = ReceiptItemsAdapter(model.receipt) {
             binding.textViewCurrentNumHeader.text = when {
@@ -78,16 +111,20 @@ class MainActivity : AppCompatActivity() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             itemAnimator?.changeDuration = 0
         }
+    }
+
+    private fun setupProducts() {
+        val productsAdapter = ProductsAdapter(model.products)
+
+        model.products.observe(this, { productsAdapter.notifyDataSetChanged() })
 
         binding.recyclerViewProducts.apply {
             layoutManager = GridLayoutManager(context, 3)
-            adapter = ProductsAdapter(model.products)
+            adapter = productsAdapter
         }
-
-        model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -99,23 +136,23 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.menuItemPrinterTest -> {
-                if (PrintManager.isPrinterInitialized) {
-                    Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT)
-                        .show()
-                    PrintManager.printer.print(TEST_CONTENT.toByteArray())
-                } else {
-                    Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
-                        .show()
-                }
+                printTestContent()
                 true
             }
             R.id.menuItemSettings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun printTestContent() {
+        if (PrintManager.isPrinterInitialized) {
+            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT).show()
+            PrintManager.printer.print(TEST_CONTENT.toByteArray())
+        } else {
+            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
         }
     }
 

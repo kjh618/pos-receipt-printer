@@ -2,10 +2,11 @@ package com.kjh.posreceiptprinter.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.databinding.ButtonProductBinding
 
-class ProductsAdapter(private val products: Array<String>) :
+class ProductsAdapter(private val products: LiveData<List<String>>) :
     RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ButtonProductBinding) :
@@ -23,10 +24,10 @@ class ProductsAdapter(private val products: Array<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(products[position])
+        holder.bind(products.value!![position])
     }
 
     override fun getItemCount(): Int {
-        return products.size
+        return products.value!!.size
     }
 }

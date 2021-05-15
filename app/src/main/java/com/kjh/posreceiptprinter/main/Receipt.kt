@@ -5,15 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.kjh.posreceiptprinter.printing.PrintContent
 
-class Receipt(val title: String) {
+class Receipt {
+    val title: MutableLiveData<String> by lazy { MutableLiveData("영수증") }
     private val items: MutableList<ReceiptItem> = mutableListOf()
     private val totalPrice: MutableLiveData<Long> by lazy { MutableLiveData(0) }
 
     val itemCount: Int
         get() = items.size
 
-    fun observeTotalPrice(owner: LifecycleOwner, observer: Observer<Long>) {
-        totalPrice.observe(owner, observer)
+    fun observe(
+        owner: LifecycleOwner,
+        titleObserver: Observer<String>,
+        totalPriceObserver: Observer<Long>,
+    ) {
+        title.observe(owner, titleObserver)
+        totalPrice.observe(owner, totalPriceObserver)
     }
 
     fun getItem(index: Int): ReceiptItem {
