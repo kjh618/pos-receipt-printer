@@ -1,5 +1,7 @@
 package com.kjh.posreceiptprinter.printing
 
+const val CPL_FONT_A: Int = 42 // Characters per line
+
 val TEST_CONTENT: PrintContent = PrintContent().apply {
     addCommand(PrinterCommand.Initialize)
 
