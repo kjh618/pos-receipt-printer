@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 class MainViewModel : ViewModel() {
     val receipt: Receipt = Receipt()
 
-    val products: MutableLiveData<List<String>> by lazy { MutableLiveData(listOf("상품 1")) }
+    val products: MutableLiveData<List<String>> by lazy { MutableLiveData(listOf()) }
 
     val currentNum: MutableLiveData<String> by lazy { MutableLiveData("") }
 }

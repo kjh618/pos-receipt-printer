@@ -1,17 +1,23 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference
-        android:defaultValue="영수증"
-        android:key="title"
-        android:title="영수증 제목"
-        app:useSimpleSummaryProvider="true" />
-    <EditTextPreference
-        android:defaultValue="상품 1"
-        android:key="products"
-        android:title="상품" />
-    <EditTextPreference
-        android:defaultValue="영수증"
-        android:key="footer"
-        android:title="영수증 꼬리말"
-        app:useSimpleSummaryProvider="true" />
+    <PreferenceCategory android:title="상품">
+
+        <EditTextPreference
+            android:defaultValue="상품 1\n상품 2"
+            android:key="products"
+            android:title="상품 등록" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="영수증">
+
+        <EditTextPreference
+            android:defaultValue="영수증 제목"
+            android:key="title"
+            android:title="제목"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:defaultValue="영수증 꼬리말"
+            android:key="footer"
+            android:title="꼬리말"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

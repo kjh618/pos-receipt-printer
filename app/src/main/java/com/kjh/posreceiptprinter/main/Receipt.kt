@@ -1,5 +1,6 @@
 package com.kjh.posreceiptprinter.main
 
+import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -11,23 +12,17 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class Receipt {
-    val title: MutableLiveData<String> by lazy { MutableLiveData("영수증") }
     private val items: MutableList<ReceiptItem> = mutableListOf()
     private val totalPrice: MutableLiveData<Long> by lazy { MutableLiveData(0) }
-    var footer: String = ""
 
+    lateinit var prefs: SharedPreferences
     lateinit var res: Resources
 
     val itemCount: Int
         get() = items.size
 
-    fun observe(
-        owner: LifecycleOwner,
-        titleObserver: Observer<String>,
-        totalPriceObserver: Observer<Long>,
-    ) {
-        title.observe(owner, titleObserver)
-        totalPrice.observe(owner, totalPriceObserver)
+    fun observeTotalPrice(owner: LifecycleOwner, observer: Observer<Long>) {
+        totalPrice.observe(owner, observer)
     }
 
     fun getItem(index: Int): ReceiptItem {
@@ -59,14 +54,18 @@ class Receipt {
         return PrintContent().apply {
             addCommand(PrinterCommand.Initialize)
 
-            addCommand(PrinterCommand.SelectPrintModes(PrintModes(doubleHeight = true, doubleWidth = true)))
+            addCommand(PrinterCommand.SelectPrintModes(PrintModes(
+                doubleHeight = true,
+                doubleWidth = true,
+            )))
             addCommand(PrinterCommand.SelectJustification(Justification.Center))
-            addText(title.value!! + "\n\n")
+            val title = prefs.getString("title", null)!!
+            addText(title + "\n\n")
 
             addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
             addCommand(PrinterCommand.SelectJustification(Justification.Right))
-            val dateTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                .format(Date())
+            val dateTime =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
             addText(dateTime + "\n")
 
             addCommand(PrinterCommand.SelectJustification(Justification.Left))
@@ -90,10 +89,10 @@ class Receipt {
                 TableCell(res.getString(R.string.total_price_header), Justification.Left, 2),
                 TableCell(totalPrice.value!!.format("0"), Justification.Right, 5),
             ))
-
             addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
             addText("=".repeat(CPL_FONT_A) + "\n\n")
 
+            val footer = prefs.getString("footer", null)!!
             addText(footer + "\n")
 
             addCommand(PrinterCommand.PartialCut(100))

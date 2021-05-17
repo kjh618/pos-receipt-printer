@@ -36,10 +36,9 @@ class MainActivity : AppCompatActivity() {
     private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
-                "title" -> model.receipt.title.value = sharedPreferences.getString(key, null)!!
+                "title" -> supportActionBar!!.title = sharedPreferences.getString(key, null)!!
                 "products" -> model.products.value =
                     parseProductsPreference(sharedPreferences.getString(key, null)!!)
-                "footer" -> model.receipt.footer = sharedPreferences.getString(key, null)!!
             }
         }
 
@@ -58,13 +57,9 @@ class MainActivity : AppCompatActivity() {
         setupReceipt()
         model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
 
-        PreferenceManager.getDefaultSharedPreferences(this).apply {
-            registerOnSharedPreferenceChangeListener(listener)
-
-            model.receipt.title.value = getString("title", "영수증")!!
-            model.products.value = parseProductsPreference(getString("products", "상품 1")!!)
-            model.receipt.footer = getString("footer", "영수증")!!
-        }
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .registerOnSharedPreferenceChangeListener(listener)
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false)
     }
 
     private fun setupPrinter() {
@@ -82,15 +77,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupReceipt() {
+        model.receipt.prefs = PreferenceManager.getDefaultSharedPreferences(this)
         model.receipt.res = resources
-        model.receipt.observe(
-            this,
-            { supportActionBar!!.title = "${getString(R.string.app_name)} - $it" },
-            {
-                binding.textViewTotalPrice.text =
-                    getString(R.string.money_amount, it.format("0"))
-            },
-        )
+        model.receipt.observeTotalPrice(this, {
+            binding.textViewTotalPrice.text = getString(R.string.money_amount, it.format("0"))
+        })
 
         receiptItemsAdapter = ReceiptItemsAdapter(model.receipt) {
             binding.textViewCurrentNumHeader.text = when {
