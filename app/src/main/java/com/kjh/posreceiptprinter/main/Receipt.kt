@@ -51,6 +51,7 @@ class Receipt {
     }
 
     fun toPrintContent(): PrintContent {
+        // TODO: Use bold?
         return PrintContent().apply {
             addCommand(PrinterCommand.Initialize)
 

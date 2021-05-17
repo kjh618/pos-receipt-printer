@@ -31,6 +31,8 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var model: MainViewModel
+    private lateinit var toastNoPrinter: Toast
+    private lateinit var toastPrinting: Toast
     private lateinit var receiptItemsAdapter: ReceiptItemsAdapter
 
     private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
@@ -48,6 +50,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarMain)
         model = ViewModelProvider(this).get(MainViewModel::class.java)
+        toastNoPrinter =
+            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
+        toastPrinting =
+            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT)
 
         Log.i(this::class.simpleName, "Locale: ${Locale.getDefault()}")
 
@@ -60,7 +66,6 @@ class MainActivity : AppCompatActivity() {
         PreferenceManager.setDefaultValues(this, R.xml.settings, true)
         PreferenceManager.getDefaultSharedPreferences(this).apply {
             registerOnSharedPreferenceChangeListener(listener)
-
             listener.onSharedPreferenceChanged(this, "title")
             listener.onSharedPreferenceChanged(this, "products")
         }
@@ -74,8 +79,7 @@ class MainActivity : AppCompatActivity() {
                 PrintManager.initializeUsbPrinter(manager, device)
             } else {
                 Log.w(this::class.simpleName, "No USB device detected")
-                Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
-                    .show()
+                toastNoPrinter.show()
             }
         }
     }
@@ -146,10 +150,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun printTestContent() {
         if (PrintManager.isPrinterInitialized) {
-            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT).show()
+            toastPrinting.show()
             PrintManager.printer.print(TEST_CONTENT.toByteArray())
         } else {
-            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
+            toastNoPrinter.show()
         }
     }
 
@@ -195,11 +199,11 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
         if (PrintManager.isPrinterInitialized) {
-            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT).show()
+            toastPrinting.show()
             PrintManager.printer.print(model.receipt.toPrintContent().toByteArray())
             receiptItemsAdapter.clearItems()
         } else {
-            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
+            toastNoPrinter.show()
         }
     }
 }

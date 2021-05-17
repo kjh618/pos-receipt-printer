@@ -20,7 +20,7 @@ class PrinterInfoActivity : AppCompatActivity() {
         binding.textViewPrinterInfo.text = if (PrintManager.isPrinterInitialized) {
             PrintManager.printer.toString()
         } else {
-            "no printer"
+            "(no printer)"
         }
     }
 
