@@ -57,9 +57,13 @@ class MainActivity : AppCompatActivity() {
         setupReceipt()
         model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
 
-        PreferenceManager.getDefaultSharedPreferences(this)
-            .registerOnSharedPreferenceChangeListener(listener)
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false)
+        PreferenceManager.setDefaultValues(this, R.xml.settings, true)
+        PreferenceManager.getDefaultSharedPreferences(this).apply {
+            registerOnSharedPreferenceChangeListener(listener)
+
+            listener.onSharedPreferenceChanged(this, "title")
+            listener.onSharedPreferenceChanged(this, "products")
+        }
     }
 
     private fun setupPrinter() {
