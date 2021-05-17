@@ -69,7 +69,7 @@ class Receipt {
             addText(dateTime + "\n")
 
             addCommand(PrinterCommand.SelectJustification(Justification.Left))
-            addText("=".repeat(CPL_FONT_A) + "\n")
+            addLine('=')
 
             addTableRow(listOf(
                 TableCell(res.getString(R.string.product_header), Justification.Center, 2),
@@ -78,19 +78,21 @@ class Receipt {
                 TableCell(res.getString(R.string.price_header), Justification.Center, 2),
             ))
 
-            addText("-".repeat(CPL_FONT_A) + "\n")
+            addLine('-')
 
             items.forEach { addTableRow(it.toTableRow()) }
 
-            addText("-".repeat(CPL_FONT_A) + "\n")
+            addLine('-')
 
             addCommand(PrinterCommand.SelectPrintModes(PrintModes(doubleHeight = true)))
             addTableRow(listOf(
                 TableCell(res.getString(R.string.total_price_header), Justification.Left, 2),
                 TableCell(totalPrice.value!!.format("0"), Justification.Right, 5),
             ))
+
             addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
-            addText("=".repeat(CPL_FONT_A) + "\n\n")
+            addLine('=')
+            addText("\n")
 
             val footer = prefs.getString("footer", null)!!
             addText(footer + "\n")

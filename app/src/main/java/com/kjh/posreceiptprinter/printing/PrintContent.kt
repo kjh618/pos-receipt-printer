@@ -7,7 +7,8 @@ val TEST_CONTENT: PrintContent = PrintContent().apply {
 
     addText("프린터 테스트 (Printer Test)\n\n")
 
-    addText("=".repeat(CPL_FONT_A) + "\n\n")
+    addLine('=')
+    addText("\n")
 
     // Test PrintModes
     addCommand(PrinterCommand.SelectPrintModes(PrintModes(emphasized = true)))
@@ -26,7 +27,8 @@ val TEST_CONTENT: PrintContent = PrintContent().apply {
     addText("강조 + 높이/너비 2배 (Emphasized + Double Height/Width)\n\n")
 
     addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
-    addText("-".repeat(CPL_FONT_A) + "\n\n")
+    addLine('-')
+    addText("\n")
 
     // Test Justification
     addCommand(PrinterCommand.SelectJustification(Justification.Left))
@@ -37,7 +39,8 @@ val TEST_CONTENT: PrintContent = PrintContent().apply {
     addText("오른쪽 정렬 (Right Justification)\n\n")
 
     addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
-    addText("-".repeat(CPL_FONT_A) + "\n\n")
+    addLine('-')
+    addText("\n")
 
     // Test table
     addTableRow(listOf(
@@ -60,7 +63,8 @@ val TEST_CONTENT: PrintContent = PrintContent().apply {
     ))
     addText("\n")
 
-    addText("-".repeat(CPL_FONT_A) + "\n\n")
+    addLine('-')
+    addText("\n")
 
     // Test table with long cells
     addTableRow(listOf(
@@ -122,6 +126,11 @@ class PrintContent(private var bytes: MutableList<Byte> = mutableListOf()) {
 
     fun addText(text: String) {
         text.toByteArray(CHARSET).toCollection(bytes)
+    }
+
+    // Assume font A and width 1
+    fun addLine(char: Char) {
+        addText(char.toString().repeat(CPL_FONT_A) + "\n")
     }
 
     // Assume font A and width 1
