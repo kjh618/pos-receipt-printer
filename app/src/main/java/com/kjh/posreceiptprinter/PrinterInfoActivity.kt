@@ -2,11 +2,10 @@ package com.kjh.posreceiptprinter
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kjh.posreceiptprinter.databinding.ActivityPrinterInfoBinding
 import com.kjh.posreceiptprinter.printing.CHARSET
-import com.kjh.posreceiptprinter.printing.PrintManager
+import com.kjh.posreceiptprinter.printing.PrinterManager
 
 class PrinterInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPrinterInfoBinding
@@ -17,21 +16,11 @@ class PrinterInfoActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarPrinterInfo)
 
-        binding.textViewPrinterInfo.text = if (PrintManager.isPrinterInitialized) {
-            PrintManager.printer.toString()
-        } else {
-            "(no printer)"
-        }
+        binding.textViewPrinterInfo.text = PrinterManager.printer?.toString() ?: "(no printer)"
     }
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
-        if (PrintManager.isPrinterInitialized) {
-            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT).show()
-            val bytes = parseHexEscapes(binding.editTextPrintRaw.text.toString())
-            PrintManager.printer.print(bytes)
-        } else {
-            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT).show()
-        }
+        PrinterManager.printAndDo({ parseHexEscapes(binding.editTextPrintRaw.text.toString()) })
     }
 
     private fun parseHexEscapes(stringWithHex: String): ByteArray {

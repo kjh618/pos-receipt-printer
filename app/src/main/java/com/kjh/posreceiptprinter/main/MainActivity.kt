@@ -1,8 +1,6 @@
 package com.kjh.posreceiptprinter.main
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Bundle
@@ -11,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -22,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
-import com.kjh.posreceiptprinter.printing.PrintManager
+import com.kjh.posreceiptprinter.printing.PrinterManager
 import com.kjh.posreceiptprinter.printing.TEST_CONTENT
 import com.kjh.posreceiptprinter.settings.SettingsActivity
 import com.kjh.posreceiptprinter.settings.parseProductsPreference
@@ -31,8 +28,6 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var model: MainViewModel
-    private lateinit var toastNoPrinter: Toast
-    private lateinit var toastPrinting: Toast
     private lateinit var receiptItemsAdapter: ReceiptItemsAdapter
 
     private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
@@ -50,14 +45,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarMain)
         model = ViewModelProvider(this).get(MainViewModel::class.java)
-        toastNoPrinter =
-            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
-        toastPrinting =
-            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT)
 
         Log.i(this::class.simpleName, "Locale: ${Locale.getDefault()}")
 
-        setupPrinter()
+        if (savedInstanceState == null) {
+            if (!PrinterManager.isInitialized) {
+                setupPrinterManager()
+            }
+            if (PrinterManager.printer == null) {
+                setupPrinter()
+            }
+        }
 
         setupProducts()
         setupReceipt()
@@ -71,16 +69,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupPrinter() {
-        if (!PrintManager.isPrinterInitialized) {
-            val manager = getSystemService(Context.USB_SERVICE) as UsbManager
-            val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
-            if (device != null) {
-                PrintManager.initializeUsbPrinter(manager, device)
-            } else {
-                Log.w(this::class.simpleName, "No USB device detected")
-                toastNoPrinter.show()
+    override fun onNewIntent(newIntent: Intent) {
+        super.onNewIntent(newIntent)
+        intent = newIntent
+        setupPrinter()
+    }
+
+    private fun setupPrinterManager() {
+        val deviceDetachedReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)!!
+                if (device == PrinterManager.printer?.device) {
+                    PrinterManager.removeUsbPrinter()
+                }
             }
+        }
+        PrinterManager.initialize(applicationContext, deviceDetachedReceiver)
+    }
+
+    private fun setupPrinter() {
+        val manager = getSystemService(Context.USB_SERVICE) as UsbManager
+
+        val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
+        if (device != null) {
+            PrinterManager.initializeUsbPrinter(manager, device)
+        } else {
+            PrinterManager.toastNoPrinter.show()
+            Log.w(this::class.simpleName, "No USB device detected")
         }
     }
 
@@ -149,12 +164,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printTestContent() {
-        if (PrintManager.isPrinterInitialized) {
-            toastPrinting.show()
-            PrintManager.printer.print(TEST_CONTENT.toByteArray())
-        } else {
-            toastNoPrinter.show()
-        }
+        PrinterManager.printAndDo({ TEST_CONTENT.toByteArray() })
     }
 
     fun onClickButtonRemoveReceiptItem(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -198,12 +208,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
-        if (PrintManager.isPrinterInitialized) {
-            toastPrinting.show()
-            PrintManager.printer.print(model.receipt.toPrintContent().toByteArray())
-            receiptItemsAdapter.clearItems()
-        } else {
-            toastNoPrinter.show()
-        }
+        PrinterManager.printAndDo(
+            { model.receipt.toPrintContent().toByteArray() },
+            { receiptItemsAdapter.clearItems() },
+        )
     }
 }

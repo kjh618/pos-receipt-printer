@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.POSReceiptPrinter">
-        <activity android:name=".main.MainActivity">
+
+        <activity
+            android:name=".main.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
@@ -23,12 +26,15 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
+
         <activity
             android:name=".PrinterInfoActivity"
             android:label="@string/printer_info" />
+
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/settings" />
+
     </application>
 
 </manifest>
