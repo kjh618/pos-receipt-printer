@@ -15,9 +15,6 @@ class Receipt {
     private val items: MutableList<ReceiptItem> = mutableListOf()
     private val totalPrice: MutableLiveData<Long> by lazy { MutableLiveData(0) }
 
-    lateinit var prefs: SharedPreferences
-    lateinit var res: Resources
-
     val itemCount: Int
         get() = items.size
 
@@ -50,8 +47,7 @@ class Receipt {
         totalPrice.value = 0
     }
 
-    fun toPrintContent(): PrintContent {
-        // TODO: Use bold?
+    fun toPrintContent(res: Resources, title: String, footer: String): PrintContent {
         return PrintContent().apply {
             addCommand(PrinterCommand.Initialize)
 
@@ -60,7 +56,6 @@ class Receipt {
                 doubleWidth = true,
             )))
             addCommand(PrinterCommand.SelectJustification(Justification.Center))
-            val title = prefs.getString("title", null)!!
             addText(title + "\n\n")
 
             addCommand(PrinterCommand.SelectPrintModes(PrintModes()))
@@ -95,7 +90,6 @@ class Receipt {
             addLine('=')
             addText("\n")
 
-            val footer = prefs.getString("footer", null)!!
             addText(footer + "\n")
 
             addCommand(PrinterCommand.PartialCut(100))

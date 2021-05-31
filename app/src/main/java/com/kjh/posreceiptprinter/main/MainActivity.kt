@@ -1,6 +1,9 @@
 package com.kjh.posreceiptprinter.main
 
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Bundle
@@ -100,8 +103,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupReceipt() {
-        model.receipt.prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        model.receipt.res = resources
         model.receipt.observeTotalPrice(this, {
             binding.textViewTotalPrice.text = getString(R.string.money_amount, it.format("0"))
         })
@@ -209,7 +210,12 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
         PrinterManager.printAndDo(
-            { model.receipt.toPrintContent().toByteArray() },
+            {
+                val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+                val title = prefs.getString("title", null)!!
+                val footer = prefs.getString("footer", null)!!
+                model.receipt.toPrintContent(resources, title, footer).toByteArray()
+            },
             { receiptItemsAdapter.clearItems() },
         )
     }
