@@ -1,9 +1,10 @@
 package com.kjh.posreceiptprinter.main
 
-import android.content.BroadcastReceiver
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -22,10 +24,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kjh.posreceiptprinter.printerinfo.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
-import com.kjh.posreceiptprinter.print.PrinterManager
-import com.kjh.posreceiptprinter.print.TEST_CONTENT
+import com.kjh.posreceiptprinter.print.*
 import com.kjh.posreceiptprinter.settings.SettingsActivity
 import com.kjh.posreceiptprinter.settings.parseProductsPreference
+import java.io.IOException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -53,10 +55,10 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             if (!PrinterManager.isInitialized) {
-                setupPrinterManager()
+                PrinterManager.initialize(applicationContext)
             }
             if (PrinterManager.printer == null) {
-                setupPrinter()
+                connectUsbPrinter()
             }
         }
 
@@ -75,31 +77,22 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(newIntent: Intent) {
         super.onNewIntent(newIntent)
         intent = newIntent
-        setupPrinter()
+        connectUsbPrinter()
     }
 
-    private fun setupPrinterManager() {
-        val deviceDetachedReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)!!
-                if (device == PrinterManager.printer?.device) {
-                    PrinterManager.removeUsbPrinter()
-                }
+    private fun connectUsbPrinter() {
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
+            val manager = getSystemService(Context.USB_SERVICE) as UsbManager
+            val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
+            if (device != null) {
+                PrinterManager.printer = UsbPrinter(manager, device)
+                return
             }
         }
-        PrinterManager.initialize(applicationContext, deviceDetachedReceiver)
-    }
 
-    private fun setupPrinter() {
-        val manager = getSystemService(Context.USB_SERVICE) as UsbManager
-
-        val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
-        if (device != null) {
-            PrinterManager.initializeUsbPrinter(manager, device)
-        } else {
-            PrinterManager.toastNoPrinter.show()
-            Log.w(this::class.simpleName, "No USB device detected")
-        }
+        Toast.makeText(applicationContext, R.string.toast_usb_printer_connection_failed, Toast.LENGTH_SHORT)
+            .show()
+        Log.w(this::class.simpleName, "Failed to connect to USB printer")
     }
 
     private fun setupReceipt() {
@@ -148,12 +141,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.menuItemConnectBluetooth -> {
+                connectBluetoothPrinter()
+                true
+            }
             R.id.menuItemPrinterInfo -> {
                 startActivity(Intent(this, PrinterInfoActivity::class.java))
                 true
             }
             R.id.menuItemPrinterTest -> {
-                printTestContent()
+                PrinterManager.printAndDoIfSuccessful({ TEST_CONTENT.toByteArray() })
                 true
             }
             R.id.menuItemSettings -> {
@@ -164,8 +161,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun printTestContent() {
-        PrinterManager.printAndDo({ TEST_CONTENT.toByteArray() })
+    private fun connectBluetoothPrinter() {
+        val toastConnectionFailed =
+            Toast.makeText(applicationContext, R.string.toast_bluetooth_printer_connection_failed, Toast.LENGTH_SHORT)
+
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)) {
+            val adapter = BluetoothAdapter.getDefaultAdapter()!!
+            val device = adapter.bondedDevices.elementAt(0) // TODO: Search name?
+            try {
+                PrinterManager.printer = BluetoothPrinter(device)
+            } catch (e: IOException) {
+                toastConnectionFailed.show()
+                Log.w(this::class.simpleName, "Failed to connect to Bluetooth printer: $e")
+            }
+            return
+        }
+
+        toastConnectionFailed.show()
+        Log.w(this::class.simpleName, "Failed to connect to Bluetooth printer")
     }
 
     fun onClickButtonRemoveReceiptItem(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -209,7 +222,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
-        PrinterManager.printAndDo(
+        PrinterManager.printAndDoIfSuccessful(
             {
                 val prefs = PreferenceManager.getDefaultSharedPreferences(this)
                 val title = prefs.getString("title", null)!!

@@ -1,13 +1,17 @@
 <resources>
     <string name="app_name">포스 영수증 프린터</string>
 
+    <string name="menu_item_connect_bluetooth">블루투스 연결</string>
     <string name="printer_info">프린터 정보</string>
     <string name="menu_item_printer_test">프린터 테스트</string>
     <string name="settings">설정</string>
 
-    <string name="toast_printer_initialized">프린터 연결됨</string>
-    <string name="toast_printer_detached">프린터 연결 끊어짐</string>
+    <string name="toast_printer_connected">프린터 연결됨</string>
+    <string name="toast_usb_printer_connection_failed">USB 프린터 연결 실패</string>
+    <string name="toast_bluetooth_printer_connection_failed">블루투스 프린터 연결 실패</string>
+    <string name="toast_printer_disconnected">프린터 연결 끊어짐</string>
     <string name="toast_printing">프린트 중...</string>
+    <string name="toast_print_failed">프린트 실패</string>
     <string name="toast_no_printer">프린터 연결되지 않음</string>
 
     <string name="product_header">상품</string>

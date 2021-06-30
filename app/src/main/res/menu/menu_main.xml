@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menuItemConnectBluetooth"
+        android:title="@string/menu_item_connect_bluetooth"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menuItemPrinterInfo"
         android:title="@string/printer_info"
         app:showAsAction="never" />

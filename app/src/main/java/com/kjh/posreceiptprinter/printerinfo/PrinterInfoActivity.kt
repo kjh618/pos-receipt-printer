@@ -20,7 +20,7 @@ class PrinterInfoActivity : AppCompatActivity() {
     }
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
-        PrinterManager.printAndDo({ parseHexEscapes(binding.editTextPrintRaw.text.toString()) })
+        PrinterManager.printAndDoIfSuccessful({ parseHexEscapes(binding.editTextPrintRaw.text.toString()) })
     }
 
     private fun parseHexEscapes(stringWithHex: String): ByteArray {
