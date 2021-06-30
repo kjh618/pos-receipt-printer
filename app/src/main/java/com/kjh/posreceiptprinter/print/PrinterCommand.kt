@@ -1,4 +1,4 @@
-package com.kjh.posreceiptprinter.printing
+package com.kjh.posreceiptprinter.print
 
 private const val ESC: Char = '\u001B'
 private const val GS: Char = '\u001D'

@@ -1,8 +1,7 @@
 package com.kjh.posreceiptprinter.main
 
-import com.kjh.posreceiptprinter.printing.Justification
-import com.kjh.posreceiptprinter.printing.TableCell
-import java.text.NumberFormat
+import com.kjh.posreceiptprinter.print.Justification
+import com.kjh.posreceiptprinter.print.TableCell
 
 class ReceiptItem(
     val product: String,

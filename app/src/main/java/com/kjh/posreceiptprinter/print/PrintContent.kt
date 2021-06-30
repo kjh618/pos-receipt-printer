@@ -1,4 +1,4 @@
-package com.kjh.posreceiptprinter.printing
+package com.kjh.posreceiptprinter.print
 
 const val CPL_FONT_A: Int = 42 // Characters per line
 

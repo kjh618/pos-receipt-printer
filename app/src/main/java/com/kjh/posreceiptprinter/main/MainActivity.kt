@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kjh.posreceiptprinter.PrinterInfoActivity
+import com.kjh.posreceiptprinter.printerinfo.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
-import com.kjh.posreceiptprinter.printing.PrinterManager
-import com.kjh.posreceiptprinter.printing.TEST_CONTENT
+import com.kjh.posreceiptprinter.print.PrinterManager
+import com.kjh.posreceiptprinter.print.TEST_CONTENT
 import com.kjh.posreceiptprinter.settings.SettingsActivity
 import com.kjh.posreceiptprinter.settings.parseProductsPreference
 import java.util.*

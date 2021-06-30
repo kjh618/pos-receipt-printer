@@ -1,11 +1,11 @@
-package com.kjh.posreceiptprinter
+package com.kjh.posreceiptprinter.printerinfo
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.kjh.posreceiptprinter.databinding.ActivityPrinterInfoBinding
-import com.kjh.posreceiptprinter.printing.CHARSET
-import com.kjh.posreceiptprinter.printing.PrinterManager
+import com.kjh.posreceiptprinter.print.CHARSET
+import com.kjh.posreceiptprinter.print.PrinterManager
 
 class PrinterInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPrinterInfoBinding

@@ -1,4 +1,4 @@
-package com.kjh.posreceiptprinter.printing
+package com.kjh.posreceiptprinter.print
 
 import android.content.BroadcastReceiver
 import android.content.Context

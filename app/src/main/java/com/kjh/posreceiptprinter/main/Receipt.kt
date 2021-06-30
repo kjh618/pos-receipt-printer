@@ -1,12 +1,11 @@
 package com.kjh.posreceiptprinter.main
 
-import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.kjh.posreceiptprinter.R
-import com.kjh.posreceiptprinter.printing.*
+import com.kjh.posreceiptprinter.print.*
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
