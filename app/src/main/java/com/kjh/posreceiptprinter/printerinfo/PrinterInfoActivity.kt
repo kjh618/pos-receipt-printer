@@ -16,11 +16,15 @@ class PrinterInfoActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarPrinterInfo)
 
-        binding.textViewPrinterInfo.text = PrinterManager.printer?.toString() ?: "(no printer)"
+        binding.textViewPrinterInfo.text =
+            PrinterManager.printer?.toString() ?: "(printer not connected)"
     }
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
-        PrinterManager.printAndDoIfSuccessful({ parseHexEscapes(binding.editTextPrintRaw.text.toString()) })
+        PrinterManager.printAndDoIfSuccessful(
+            binding.root,
+            { parseHexEscapes(binding.editTextPrintRaw.text.toString()) },
+        )
     }
 
     private fun parseHexEscapes(stringWithHex: String): ByteArray {

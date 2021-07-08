@@ -7,85 +7,52 @@ import android.content.IntentFilter
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.util.Log
-import android.widget.Toast
+import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import com.kjh.posreceiptprinter.R
 import java.nio.charset.Charset
 
 val CHARSET: Charset = Charset.forName("EUC-KR")
 
 object PrinterManager {
-    private lateinit var toastPrinterConnected: Toast
-    private lateinit var toastPrinterDisconnected: Toast
-    private lateinit var toastPrinting: Toast
-    private lateinit var toastPrintFailed: Toast
-    private lateinit var toastNoPrinter: Toast
-
     var printer: Printer? = null
         set(value) {
             field?.close()
             field = value
-            if (value == null) {
-                toastPrinterDisconnected.show()
-            } else {
-                toastPrinterConnected.show()
-            }
+            Log.i(this::class.simpleName, "Printer set to: $value")
         }
 
     var isInitialized: Boolean = false
         private set
 
-    fun initialize(applicationContext: Context) {
-        toastPrinterConnected =
-            Toast.makeText(applicationContext, R.string.toast_printer_connected, Toast.LENGTH_SHORT)
-        toastPrinterDisconnected =
-            Toast.makeText(applicationContext, R.string.toast_printer_disconnected, Toast.LENGTH_SHORT)
-        toastPrinting =
-            Toast.makeText(applicationContext, R.string.toast_printing, Toast.LENGTH_SHORT)
-        toastPrintFailed =
-            Toast.makeText(applicationContext, R.string.toast_print_failed, Toast.LENGTH_SHORT)
-        toastNoPrinter =
-            Toast.makeText(applicationContext, R.string.toast_no_printer, Toast.LENGTH_SHORT)
-
-        val usbDeviceDetachedReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                if (intent.action == UsbManager.ACTION_USB_DEVICE_DETACHED) {
-                    val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)!!
-                    if (device == (printer as? UsbPrinter)?.device) {
-                        printer = null
-                    }
-                }
-            }
-        }
-        applicationContext.registerReceiver(
-            usbDeviceDetachedReceiver,
-            IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED),
-        )
-
+    fun initialize() {
         isInitialized = true
-
         Log.i(this::class.simpleName, "Initialized")
     }
 
-    fun printAndDoIfSuccessful(getBytes: () -> ByteArray, doIfSuccessful: (() -> Unit)? = null) {
+    fun printAndDoIfSuccessful(
+        snackbarView: View,
+        getBytes: () -> ByteArray,
+        doIfSuccessful: (() -> Unit)? = null,
+    ) {
         if (printer != null) {
             val bytes = getBytes()
 
+            Snackbar.make(snackbarView, R.string.printing, Snackbar.LENGTH_SHORT).show()
             Log.i(this::class.simpleName, "Printing...")
-            toastPrinting.show()
 
             if (printer!!.print(bytes)) {
                 Log.i(this::class.simpleName, "Print successful")
 
                 doIfSuccessful?.invoke()
             } else {
-                toastPrintFailed.show()
+                Snackbar.make(snackbarView, R.string.print_failed, Snackbar.LENGTH_SHORT).show()
                 Log.i(this::class.simpleName, "Print failed")
-
-                printer = null
             }
         } else {
-            toastNoPrinter.show()
-            Log.i(this::class.simpleName, "No printer")
+            Snackbar.make(snackbarView, R.string.printer_not_connected, Snackbar.LENGTH_SHORT)
+                .show()
+            Log.i(this::class.simpleName, "Printer not connected")
         }
     }
 }

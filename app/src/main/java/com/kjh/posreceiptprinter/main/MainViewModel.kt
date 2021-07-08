@@ -9,4 +9,6 @@ class MainViewModel : ViewModel() {
     val products: MutableLiveData<List<String>> by lazy { MutableLiveData(listOf()) }
 
     val currentNum: MutableLiveData<String> by lazy { MutableLiveData("") }
+
+    val printerStatus: MutableLiveData<String> by lazy { MutableLiveData("") }
 }

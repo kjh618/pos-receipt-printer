@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menuItemConnectBluetooth"
-        android:title="@string/menu_item_connect_bluetooth"
+        android:title="@string/connect_bluetooth"
         app:showAsAction="always" />
     <item
         android:id="@+id/menuItemPrinterInfo"
@@ -12,7 +12,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/menuItemPrinterTest"
-        android:title="@string/menu_item_printer_test"
+        android:title="@string/printer_test"
         app:showAsAction="never" />
     <item
         android:id="@+id/menuItemSettings"

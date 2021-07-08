@@ -1,9 +1,7 @@
 package com.kjh.posreceiptprinter.main
 
 import android.bluetooth.BluetoothAdapter
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
@@ -13,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -21,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.kjh.posreceiptprinter.printerinfo.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
@@ -53,18 +51,23 @@ class MainActivity : AppCompatActivity() {
 
         Log.i(this::class.simpleName, "Locale: ${Locale.getDefault()}")
 
+        model.printerStatus.observe(this, { binding.textViewPrinterStatus.text = it })
+
         if (savedInstanceState == null) {
             if (!PrinterManager.isInitialized) {
-                PrinterManager.initialize(applicationContext)
+                initializePrinterManager()
             }
             if (PrinterManager.printer == null) {
                 connectUsbPrinter()
             }
         }
 
-        setupProducts()
         setupReceipt()
-        model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
+        setupProducts()
+        model.currentNum.observe(this, {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            binding.textViewCurrentNum.text = it
+        })
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, true)
         PreferenceManager.getDefaultSharedPreferences(this).apply {
@@ -80,17 +83,50 @@ class MainActivity : AppCompatActivity() {
         connectUsbPrinter()
     }
 
+    private fun initializePrinterManager() {
+        PrinterManager.initialize()
+
+        val usbDeviceDetachedReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (intent.action == UsbManager.ACTION_USB_DEVICE_DETACHED) {
+                    val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)!!
+                    if (device == (PrinterManager.printer as? UsbPrinter)?.device) {
+                        disconnectPrinter()
+                    }
+                }
+            }
+        }
+        applicationContext.registerReceiver(
+            usbDeviceDetachedReceiver,
+            IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED),
+        )
+    }
+
+    private fun disconnectPrinter() {
+        PrinterManager.printer = null
+        model.printerStatus.value = getString(R.string.printer_not_connected)
+//        Snackbar.make(binding.root, R.string.printer_disconnected, Snackbar.LENGTH_SHORT).show()
+//        binding.textViewPrinterStatus.text = getText(R.string.printer_not_connected)
+    }
+
     private fun connectUsbPrinter() {
+        if (PrinterManager.printer != null) {
+            disconnectPrinter()
+        }
+
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
             val manager = getSystemService(Context.USB_SERVICE) as UsbManager
             val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
             if (device != null) {
                 PrinterManager.printer = UsbPrinter(manager, device)
+                Snackbar.make(binding.root, R.string.usb_printer_connected, Snackbar.LENGTH_SHORT)
+                    .show()
+                binding.textViewPrinterStatus.text = getText(R.string.usb_printer_connected)
                 return
             }
         }
 
-        Toast.makeText(applicationContext, R.string.toast_usb_printer_connection_failed, Toast.LENGTH_SHORT)
+        Snackbar.make(binding.root, R.string.usb_printer_connection_failed, Snackbar.LENGTH_SHORT)
             .show()
         Log.w(this::class.simpleName, "Failed to connect to USB printer")
     }
@@ -150,7 +186,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.menuItemPrinterTest -> {
-                PrinterManager.printAndDoIfSuccessful({ TEST_CONTENT.toByteArray() })
+                PrinterManager.printAndDoIfSuccessful(binding.root, { TEST_CONTENT.toByteArray() })
                 true
             }
             R.id.menuItemSettings -> {
@@ -162,8 +198,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun connectBluetoothPrinter() {
-        val toastConnectionFailed =
-            Toast.makeText(applicationContext, R.string.toast_bluetooth_printer_connection_failed, Toast.LENGTH_SHORT)
+        if (PrinterManager.printer != null) {
+            disconnectPrinter()
+        }
+
+        val snackbarConnectionFailed = Snackbar.make(
+            binding.root,
+            R.string.bluetooth_printer_connection_failed,
+            Snackbar.LENGTH_SHORT,
+        )
 
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)) {
             val adapter = BluetoothAdapter.getDefaultAdapter()!!
@@ -171,13 +214,17 @@ class MainActivity : AppCompatActivity() {
             try {
                 PrinterManager.printer = BluetoothPrinter(device)
             } catch (e: IOException) {
-                toastConnectionFailed.show()
+                snackbarConnectionFailed.show()
                 Log.w(this::class.simpleName, "Failed to connect to Bluetooth printer: $e")
+                return
             }
+            Snackbar.make(binding.root, R.string.bluetooth_printer_connected, Snackbar.LENGTH_SHORT)
+                .show()
+            binding.textViewPrinterStatus.text = getText(R.string.bluetooth_printer_connected)
             return
         }
 
-        toastConnectionFailed.show()
+        snackbarConnectionFailed.show()
         Log.w(this::class.simpleName, "Failed to connect to Bluetooth printer")
     }
 
@@ -223,6 +270,7 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickButtonPrint(@Suppress("UNUSED_PARAMETER") view: View) {
         PrinterManager.printAndDoIfSuccessful(
+            binding.root,
             {
                 val prefs = PreferenceManager.getDefaultSharedPreferences(this)
                 val title = prefs.getString("title", null)!!
