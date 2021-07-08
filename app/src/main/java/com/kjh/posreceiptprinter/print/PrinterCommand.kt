@@ -1,5 +1,9 @@
 package com.kjh.posreceiptprinter.print
 
+import java.nio.charset.Charset
+
+val CHARSET: Charset = Charset.forName("EUC-KR")
+
 private const val ESC: Char = '\u001B'
 private const val GS: Char = '\u001D'
 

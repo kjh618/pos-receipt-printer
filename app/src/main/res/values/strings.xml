@@ -10,7 +10,6 @@
     <string name="bluetooth_printer_connected">블루투스 프린터 연결됨</string>
     <string name="usb_printer_connection_failed">USB 프린터 연결 실패</string>
     <string name="bluetooth_printer_connection_failed">블루투스 프린터 연결 실패</string>
-    <string name="printer_disconnected">프린터 연결 끊어짐</string>
     <string name="printing">프린트 중...</string>
     <string name="print_failed">프린트 실패</string>
 

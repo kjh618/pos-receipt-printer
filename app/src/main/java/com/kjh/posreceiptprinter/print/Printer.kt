@@ -1,6 +1,6 @@
 package com.kjh.posreceiptprinter.print
 
-interface Printer {
+sealed interface Printer {
     fun print(bytes: ByteArray): Boolean
 
     fun close()

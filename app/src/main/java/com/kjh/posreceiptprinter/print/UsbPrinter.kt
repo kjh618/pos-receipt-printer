@@ -36,5 +36,7 @@ class UsbPrinter(
     override fun close() {
         connection.releaseInterface(interf)
         connection.close()
+
+        Log.i(this::class.simpleName, "Closed")
     }
 }

@@ -37,5 +37,7 @@ class BluetoothPrinter(
 
     override fun close() {
         socket.close()
+
+        Log.i(this::class.simpleName, "Closed")
     }
 }
