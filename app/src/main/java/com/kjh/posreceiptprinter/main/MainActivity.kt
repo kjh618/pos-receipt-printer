@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.kjh.posreceiptprinter.printerinfo.PrinterInfoActivity
 import com.kjh.posreceiptprinter.R
 import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 import com.kjh.posreceiptprinter.print.*
@@ -179,10 +178,6 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menuItemConnectBluetooth -> {
                 connectBluetoothPrinter()
-                true
-            }
-            R.id.menuItemPrinterInfo -> {
-                startActivity(Intent(this, PrinterInfoActivity::class.java))
                 true
             }
             R.id.menuItemPrinterTest -> {

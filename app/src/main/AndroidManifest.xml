@@ -32,10 +32,6 @@
         </activity>
 
         <activity
-            android:name=".printerinfo.PrinterInfoActivity"
-            android:label="@string/printer_info" />
-
-        <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/settings" />
 

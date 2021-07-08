@@ -2,7 +2,6 @@
     <string name="app_name">포스 영수증 프린터</string>
 
     <string name="connect_bluetooth">블루투스 연결</string>
-    <string name="printer_info">프린터 정보</string>
     <string name="printer_test">프린터 테스트</string>
     <string name="settings">설정</string>
 
@@ -27,7 +26,4 @@
     <string name="button_delete_digit">←</string>
     <string name="button_enter">입력 ↵</string>
     <string name="button_print">⎙ 프린트</string>
-
-    <string name="text_view_print_raw_title">프린트 Raw</string>
-    <string name="edit_text_print_raw_hint">프린트 내용 (`\\xXX`로 바이트 입력)</string>
 </resources>
