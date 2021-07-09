@@ -139,7 +139,8 @@ class MainActivity : AppCompatActivity() {
             try {
                 val deviceName = prefs.getString("bluetooth_name", null)!!
                 val device = adapter.bondedDevices.first { it.name == deviceName }
-                val rfcommUuid = prefs.getString("bluetooth_uuid", null)!!
+                val rfcommUuidString = prefs.getString("bluetooth_uuid", null)!!
+                val rfcommUuid = UUID.fromString(rfcommUuidString)
                 model.printer.value?.close()
                 model.printer.value = BluetoothPrinter(device, rfcommUuid)
             } catch (e: Exception) {

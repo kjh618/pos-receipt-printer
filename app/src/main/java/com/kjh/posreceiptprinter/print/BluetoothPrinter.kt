@@ -8,11 +8,10 @@ import java.util.*
 
 class BluetoothPrinter(
     private val device: BluetoothDevice,
-    rfcommUuid: String,
+    rfcommUuid: UUID,
 ) : Printer {
-    private val socket: BluetoothSocket = device.createRfcommSocketToServiceRecord(
-        UUID.fromString(rfcommUuid)
-    )
+    private val socket: BluetoothSocket =
+        device.createRfcommSocketToServiceRecord(rfcommUuid)
     init {
         socket.connect()
         Log.i(this::class.simpleName, "Initialized: $this")
