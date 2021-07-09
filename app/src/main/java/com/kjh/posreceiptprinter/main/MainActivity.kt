@@ -24,18 +24,19 @@ import com.kjh.posreceiptprinter.databinding.ActivityMainBinding
 import com.kjh.posreceiptprinter.print.*
 import com.kjh.posreceiptprinter.settings.SettingsActivity
 import com.kjh.posreceiptprinter.settings.parseProductsPreference
-import java.io.IOException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var model: MainViewModel
     private lateinit var receiptItemsAdapter: ReceiptItemsAdapter
+    private lateinit var prefs: SharedPreferences
 
-    private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
+    private val prefsChangeListener: SharedPreferences.OnSharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
-                "title" -> supportActionBar!!.title = sharedPreferences.getString(key, null)!!
+                "receipt_title" -> supportActionBar!!.title =
+                    sharedPreferences.getString(key, null)!!
                 "products" -> model.products.value =
                     parseProductsPreference(sharedPreferences.getString(key, null)!!)
             }
@@ -61,10 +62,10 @@ class MainActivity : AppCompatActivity() {
         model.currentNum.observe(this, { binding.textViewCurrentNum.text = it })
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, true)
-        PreferenceManager.getDefaultSharedPreferences(this).apply {
-            registerOnSharedPreferenceChangeListener(listener)
-            listener.onSharedPreferenceChanged(this, "title")
-            listener.onSharedPreferenceChanged(this, "products")
+        prefs = PreferenceManager.getDefaultSharedPreferences(this).apply {
+            registerOnSharedPreferenceChangeListener(prefsChangeListener)
+            prefsChangeListener.onSharedPreferenceChanged(this, "receipt_title")
+            prefsChangeListener.onSharedPreferenceChanged(this, "products")
         }
     }
 
@@ -94,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                 if (intent.action == UsbManager.ACTION_USB_DEVICE_DETACHED) {
                     val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)!!
                     if (device == (model.printer.value as? UsbPrinter)?.device) {
+                        model.printer.value!!.close()
                         model.printer.value = null
                     }
                 }
@@ -106,38 +108,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun connectUsbPrinter() {
+        val snackbarConnectionFailed =
+            Snackbar.make(binding.root, R.string.usb_printer_connection_failed, Snackbar.LENGTH_SHORT)
+
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
             val manager = getSystemService(Context.USB_SERVICE) as UsbManager
-            val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE)
-            if (device != null) {
+            val device = intent.getParcelableExtra<UsbDevice>(UsbManager.EXTRA_DEVICE) ?: return
+            try {
+                val interfaceIndex = prefs.getString("usb_interface", null)!!.toInt()
+                val endpointIndex = prefs.getString("usb_endpoint", null)!!.toInt()
                 model.printer.value?.close()
-                model.printer.value = UsbPrinter(manager, device)
-                return
+                model.printer.value = UsbPrinter(manager, device, interfaceIndex, endpointIndex)
+            } catch (e: Exception) {
+                snackbarConnectionFailed.show()
+                Log.w(this::class.simpleName, "Failed to connect to USB printer: $e")
             }
+            return
         }
 
-        Snackbar.make(binding.root, R.string.usb_printer_connection_failed, Snackbar.LENGTH_SHORT)
-            .show()
+        snackbarConnectionFailed.show()
         Log.w(this::class.simpleName, "Failed to connect to USB printer")
     }
 
     private fun connectBluetoothPrinter() {
-        val snackbarConnectionFailed = Snackbar.make(
-            binding.root,
-            R.string.bluetooth_printer_connection_failed,
-            Snackbar.LENGTH_SHORT,
-        )
+        val snackbarConnectionFailed =
+            Snackbar.make(binding.root, R.string.bluetooth_printer_connection_failed, Snackbar.LENGTH_SHORT)
 
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)) {
             val adapter = BluetoothAdapter.getDefaultAdapter()!!
-            val device = adapter.bondedDevices.elementAt(0) // TODO: Search name?
             try {
+                val deviceName = prefs.getString("bluetooth_name", null)!!
+                val device = adapter.bondedDevices.first { it.name == deviceName }
+                val rfcommUuid = prefs.getString("bluetooth_uuid", null)!!
                 model.printer.value?.close()
-                model.printer.value = BluetoothPrinter(device)
-            } catch (e: IOException) {
+                model.printer.value = BluetoothPrinter(device, rfcommUuid)
+            } catch (e: Exception) {
                 snackbarConnectionFailed.show()
                 Log.w(this::class.simpleName, "Failed to connect to Bluetooth printer: $e")
-                return
             }
             return
         }
@@ -158,6 +165,7 @@ class MainActivity : AppCompatActivity() {
                 doIfSuccessful?.invoke()
             } else {
                 Snackbar.make(binding.root, R.string.print_failed, Snackbar.LENGTH_SHORT).show()
+                model.printer.value!!.close()
                 model.printer.value = null
             }
         } else {
@@ -273,8 +281,8 @@ class MainActivity : AppCompatActivity() {
         printAndDoIfSuccessful(
             {
                 val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-                val title = prefs.getString("title", null)!!
-                val footer = prefs.getString("footer", null)!!
+                val title = prefs.getString("receipt_title", null)!!
+                val footer = prefs.getString("receipt_footer", null)!!
                 model.receipt.toPrintContent(resources, title, footer).toByteArray()
             },
             { receiptItemsAdapter.clearItems() },

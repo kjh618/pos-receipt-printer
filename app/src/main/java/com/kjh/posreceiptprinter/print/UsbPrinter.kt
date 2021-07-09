@@ -2,14 +2,16 @@ package com.kjh.posreceiptprinter.print
 
 import android.hardware.usb.*
 import android.util.Log
+import androidx.preference.PreferenceManager
 
 class UsbPrinter(
     manager: UsbManager,
     val device: UsbDevice,
+    interfaceIndex: Int,
+    endpointIndex: Int,
 ) : Printer {
-    // TODO: Search for valid interface/endpoint instead of using index 0
-    private val interf: UsbInterface = device.getInterface(0)
-    private val endpoint: UsbEndpoint = interf.getEndpoint(0)
+    private val interf: UsbInterface = device.getInterface(interfaceIndex)
+    private val endpoint: UsbEndpoint = interf.getEndpoint(endpointIndex)
     private val connection: UsbDeviceConnection = manager.openDevice(device)
     init {
         connection.claimInterface(interf, true)

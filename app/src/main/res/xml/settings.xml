@@ -1,5 +1,18 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="영수증">
+
+        <EditTextPreference
+            android:defaultValue="영수증 제목"
+            android:key="receipt_title"
+            android:title="제목"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:defaultValue="영수증 꼬리말"
+            android:key="receipt_footer"
+            android:title="꼬리말"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="상품">
 
         <EditTextPreference
@@ -7,17 +20,36 @@
             android:key="products"
             android:title="상품 등록" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="영수증">
+    <PreferenceCategory android:title="USB 프린터">
 
         <EditTextPreference
-            android:defaultValue="영수증 제목"
-            android:key="title"
-            android:title="제목"
+            android:defaultValue="0"
+            android:key="usb_interface"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="USB 인터페이스 번호"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
-            android:defaultValue="영수증 꼬리말"
-            android:key="footer"
-            android:title="꼬리말"
+            android:defaultValue="0"
+            android:key="usb_endpoint"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="USB 엔드포인트 번호"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="블루투스 프린터">
+
+        <EditTextPreference
+            android:defaultValue="raspberrypi"
+            android:key="bluetooth_name"
+            android:singleLine="true"
+            android:title="장치 이름"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:defaultValue="00001101-0000-1000-8000-00805F9B34FB"
+            android:key="bluetooth_uuid"
+            android:singleLine="true"
+            android:title="RFCOMM UUID"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 </PreferenceScreen>
