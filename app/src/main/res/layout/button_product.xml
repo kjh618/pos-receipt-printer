@@ -7,6 +7,6 @@
         android:id="@+id/buttonProduct"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:onClick="onClickButtonProduct"
-        android:textAppearance="@style/TextAppearance.POSReceiptPrinter.Button" />
+        android:layout_margin="4dp"
+        android:onClick="onClickButtonProduct" />
 </FrameLayout>
